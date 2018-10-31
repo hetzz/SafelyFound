@@ -4,10 +4,12 @@ import time
 import click
 import os
 import re
-import lastseen
+from . import lastseen
+import numpy as nmp
+
 MOD = 5
 known_people_folder = './knownfaces'
-
+stop = False
 def image_files_in_folder(folder):
     return [os.path.join(folder, f) for f in os.listdir(folder) if re.match(r'.*\.(jpg|jpeg|png)', f, flags=re.I)]
 
@@ -31,18 +33,20 @@ def scan_known_people(known_people_folder):
 
     return known_names, known_face_encodings
 
-def dostuff(video_capture, known_face_names, known_face_encodings, mobcam = False, count = 0):
+def dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam = False, count = 0):
     face_locations = []
     face_encodings = []
     face_names = []
-    process_this_frame = True
+    
     if mobcam:
-        ratio = 0.3
+        ratio = 0.4
     else:
         ratio = 0.5
     ratinv = 1/ratio
-    while True:
+    tolerance = 0.5
+    while not stop:
         # Grab a single frame of video
+        # print('running')
         ret, frame = video_capture.read()
         
         if count % MOD == 0:
@@ -58,27 +62,37 @@ def dostuff(video_capture, known_face_names, known_face_encodings, mobcam = Fals
             for face_encoding in face_encodings:
                 # See if the face is a match for the known face(s)
                 
-                matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=0.55)
+                # matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=tolerance)
+                distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+                matches = list(distances <= tolerance)
                 
                 name = "Unknown"
                 stored = False
                 # If a match was found in known_face_encodings, just use the first one.
                 if True in matches:
-                    first_match_index = matches.index(True)
-                    name = known_face_names[first_match_index]
-                    print(name)
+                    match_index = (nmp.argmin(distances, axis=0))
+                    print(distances)
+                    print(known_face_names)
+                    # first_match_index = matches.index(True)
+                    name = known_face_names[match_index]
+                    
                     if lastseen.store(name):
                         stored = True
                 face_names.append(name)
-
-            process_this_frame = not process_this_frame
+                print(name)
+            
 
             for (top, right, bottom, left), name in zip(face_locations, face_names):
                 
-                top *= int(round(ratinv, 0))
-                right *= int(round(ratinv, 0))
-                bottom *= int(round(ratinv, 0))
-                left *= int(round(ratinv, 0))
+                top *= ratinv
+                right *= ratinv
+                bottom *= ratinv
+                left *= ratinv
+
+                top = int(round(top, 0))
+                right = int(round(right, 0))
+                left = int(round(left, 0))
+                bottom = int(round(bottom, 0))
 
                 cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
 
@@ -87,17 +101,22 @@ def dostuff(video_capture, known_face_names, known_face_encodings, mobcam = Fals
                 cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
                 if stored:
                     cv2.imwrite('./finds/'+ '_'.join(name.split())+str(lastseen.lastseendict[name][-1][0])+'.jpg', frame )
-            cv2.imshow('Video', frame)
+            if ct == 0:
+                cv2.imshow('Video', frame)
+            
+            
         # Hit 'q' on the keyboard to quit!
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-        # time.sleep(.005)
+        if ct == 0:
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+        else:
+            time.sleep(.005)
         count += 1
     # Release handle to the webcam
     video_capture.release()
     cv2.destroyAllWindows()
-
-def main():
+def main(ct):
+    
     known_face_names, known_face_encodings = scan_known_people(known_people_folder)
     mobcam = True
     if mobcam:
@@ -105,7 +124,9 @@ def main():
     else:
         address = 0
     video_capture = cv2.VideoCapture(address)
-    dostuff(video_capture, known_face_names, known_face_encodings, mobcam=True)
+    dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam=True)
+    print('hi')
+
 
 if __name__ == "__main__":
-    main()
+    main(0)
