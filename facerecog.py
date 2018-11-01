@@ -99,8 +99,8 @@ def dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam = 
                 cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 255, 0), cv2.FILLED)
                 font = cv2.FONT_HERSHEY_DUPLEX
                 cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-                if stored:
-                    cv2.imwrite('./finds/'+ '_'.join(name.split())+str(lastseen.lastseendict[name][-1][0])+'.jpg', frame )
+                if stored and name != 'Unknown':
+                    cv2.imwrite('./finds/'+ '_'.join(name.split())+'-'+'_'.join(str(lastseen.lastseendict[name][-1][0]).split())+'.jpg', frame )
             if ct == 0:
                 cv2.imshow('Video', frame)
             
@@ -118,7 +118,8 @@ def dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam = 
 def main(ct):
     
     known_face_names, known_face_encodings = scan_known_people(known_people_folder)
-    mobcam = True
+    lastseen.openconnection()
+    mobcam = False
     if mobcam:
         address = 'http://192.168.15.184:8080/video'
     else:
@@ -126,6 +127,7 @@ def main(ct):
     video_capture = cv2.VideoCapture(address)
     dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam=True)
     print('hi')
+    lastseen.closeconnection()
 
 
 if __name__ == "__main__":

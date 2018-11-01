@@ -27,7 +27,13 @@ def stop():
     return jsonify({'stopped': True})
 
 
+@app.route('/gpr', methods = ['POST'])
+def fileup():
+    print('request received  file')
+    print(request.files)
+    d = {'type':'text', 'loc':'Delhi'}
     
+    return jsonify(d)
 
 
 if __name__ == "__main__":
