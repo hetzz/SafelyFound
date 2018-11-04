@@ -6,8 +6,27 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import net.proteanit.sql.DbUtils;
+
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.ImageIcon;
+import java.awt.Font;
+import java.awt.Color;
+import javax.swing.JScrollPane;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Records extends JFrame {
 
@@ -23,6 +42,7 @@ public class Records extends JFrame {
 				try {
 					Records frame = new Records();
 					frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -36,23 +56,81 @@ public class Records extends JFrame {
 	public Records() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 952, 702);
+		setBounds(100, 100, 952, 537);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 952, 72);
+		panel.setBackground(new Color(255, 255, 204));
+		panel.setBounds(0, 0, 952, 89);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblName = new JLabel("Name");
-		lblName.setBounds(39, 0, 63, 72);
-		panel.add(lblName);
+		JLabel lblTheFindHistory = new JLabel("The find history of the person ");
+		lblTheFindHistory.setFont(new Font("Segoe UI", Font.BOLD, 23));
+		lblTheFindHistory.setBounds(66, 29, 413, 44);
+		panel.add(lblTheFindHistory);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 88, 952, 360);
+		contentPane.add(scrollPane);
 		
 		table = new JTable();
-		table.setBounds(15, 686, 922, -574);
-		contentPane.add(table);
+		table.setCellSelectionEnabled(true);
+		table.setColumnSelectionAllowed(true);
+		table.setBackground(new Color(255, 255, 255));
+		table.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		scrollPane.setViewportView(table);
+		
+		JLabel label = new JLabel("");
+		label.setIcon(new ImageIcon(Records.class.getResource("/Pack1/Images/icons8_Marker_52px_1.png")));
+		label.setBounds(15, 16, 57, 57);
+		panel.add(label);
+		
+		JLabel label_1 = new JLabel("");
+		label_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				System.exit(0);
+			}
+		});
+		label_1.setIcon(new ImageIcon(Records.class.getResource("/Pack1/Images/icons8_Delete_50px_1.png")));
+		label_1.setBounds(894, 0, 56, 89);
+		panel.add(label_1);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(255, 255, 255));
+		panel_1.setBounds(0, 88, 952, 449);
+		contentPane.add(panel_1);
+		panel_1.setLayout(null);
+		
+		JButton btnClick = new JButton("Click");
+		btnClick.setFont(new Font("Segoe UI", Font.BOLD, 22));
+		btnClick.setBounds(362, 376, 180, 57);
+		panel_1.add(btnClick);
+		btnClick.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String driver="com.mysql.cj.jdbc.Driver";
+				try {
+					Class.forName(driver);
+					Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
+					PreparedStatement stmt=conn.prepareStatement("select * from Records_MissingPpl");
+					ResultSet rs=stmt.executeQuery();
+					table.setModel(DbUtils.resultSetToTableModel(rs));
+					
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		
+		
 	}
 }
