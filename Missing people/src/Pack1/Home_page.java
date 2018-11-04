@@ -37,6 +37,8 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseAdapter;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+
 import java.awt.SystemColor;
 
 public class Home_page extends JFrame {
@@ -272,6 +274,25 @@ public class Home_page extends JFrame {
 		lblStopSurveillance.setBounds(25, 0, 252, 60);
 		panel_8.add(lblStopSurveillance);
 		
+		JLabel lblWe = new JLabel("We  ");
+		lblWe.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblWe.setForeground(new Color(255, 204, 255));
+		lblWe.setBounds(26, 55, 205, 20);
+		panel.add(lblWe);
+		
+		JLabel lblNewLabel = new JLabel("your safety");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel.setForeground(new Color(255, 204, 255));
+		lblNewLabel.setIcon(new ImageIcon(Home_page.class.getResource("/Pack1/Images/icons8_Heart_Health_30px.png")));
+		lblNewLabel.setBounds(62, 46, 180, 38);
+		panel.add(lblNewLabel);
+		
+		JSeparator separator = new JSeparator();
+		separator.setForeground(new Color(255, 255, 255));
+		separator.setBackground(new Color(255, 204, 255));
+		separator.setBounds(15, 91, 267, 10);
+		panel.add(separator);
+		
 		textField = new JTextField();
 		textField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		textField.setBounds(374, 348, 481, 57);
@@ -279,6 +300,7 @@ public class Home_page extends JFrame {
 		textField.setColumns(10);
 		
 		JButton button = new JButton("");
+		button.setBackground(new Color(255, 240, 245));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String Name;

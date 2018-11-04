@@ -18,10 +18,16 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JToggleButton;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import javax.swing.JTable;
+
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.components.JLocaleChooser;
@@ -32,12 +38,17 @@ import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
@@ -213,6 +224,56 @@ public class MissingPeople  extends JFrame{
 		rdbtnFemal.setFont(new Font("Segoe UI", Font.BOLD, 23));
 		
 		JButton btnUpload = new JButton("Upload");
+		btnUpload.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser jFile=new JFileChooser();
+				jFile.setDialogTitle("Choose an Image to upload" );
+				int result =jFile.showSaveDialog(null);
+				if(result== JFileChooser.APPROVE_OPTION)
+				{
+					String encodedfile = null;
+					//Get this file path using JFileChooser instead
+					String filePath = jFile.getSelectedFile().getAbsolutePath();
+					File file = new File(filePath);
+					
+					String extension = "";
+					int i = filePath.lastIndexOf('.');
+					if (i > 0) {
+					    extension = filePath.substring(i+1);
+					}
+					
+					Base64.Encoder encoder = Base64.getEncoder();
+				    try {
+				        FileInputStream fileInputStreamReader = new FileInputStream(file);
+				        byte[] bytes = new byte[(int)file.length()];
+				        fileInputStreamReader.read(bytes);
+				        encodedfile = encoder.encodeToString(bytes).toString();
+				        
+				    } catch (FileNotFoundException e) {
+				        // TODO Auto-generated catch block
+				        e.printStackTrace();
+				    } catch (IOException e) {
+				        // TODO Auto-generated catch block
+				        e.printStackTrace();
+				    }
+				    
+				    
+					String name = textField.getText();
+					try {
+						HttpResponse<JsonNode> fileUpR = Unirest.post("https://oopmproj4751.localtunnel.me/gpr")
+								.header("Content-Type", "application/json")
+						        .header("accept", "application/json")
+						        .body("{\"key\":\"!!MyKey@123eOOPM\", \"file\":\""+encodedfile+"\", \"name\":\""+name+"\", \"extension\":\""+extension+"\"}")
+								.asJson();
+					} catch (UnirestException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+				
+			}
+		});
 		btnUpload.setBounds(212, 266, 115, 31);
 		panel_2.add(btnUpload);
 		btnUpload.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -287,8 +348,8 @@ public class MissingPeople  extends JFrame{
 					nameM=textField.getText();
 					gender="Male";
 					if(rdbtnFemal.isSelected())
-						gender="Feamle";
-					System.out.println(nameM+" "+age+" "+gender+" "+date);
+						gender="Female";
+					
 					String driver="com.mysql.cj.jdbc.Driver";
 					Class.forName(driver);
 					Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
