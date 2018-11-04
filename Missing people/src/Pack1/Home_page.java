@@ -18,6 +18,8 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JSplitPane;
@@ -42,7 +44,7 @@ public class Home_page extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTable table;
-
+	private JPanel panel_9;
 	/**
 	 * Launch the application.
 	 */
@@ -285,9 +287,18 @@ public class Home_page extends JFrame {
 				try {
 					Class.forName(driver);
 					Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
-					PreparedStatement stmt=conn.prepareStatement("select * from Finds where Name='Name'");
+					PreparedStatement stmt=conn.prepareStatement("SELECT * FROM `Finds` WHERE `Name` = '"+Name+"'");
 					ResultSet rs=stmt.executeQuery();
+					
+					System.out.println(rs);
 					table.setModel(DbUtils.resultSetToTableModel(rs));	
+					panel_9.revalidate();
+					panel_9.repaint();
+					while (rs.next()) {
+				        System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getString(4));
+				        
+				    }
+					
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -338,7 +349,7 @@ public class Home_page extends JFrame {
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBackground(Color.WHITE);
-		panel_4.setBounds(306, 265, 745, 443);
+		panel_4.setBounds(306, 265, 745, 181);
 		contentPane.add(panel_4);
 		panel_4.setLayout(null);
 		
@@ -349,11 +360,20 @@ public class Home_page extends JFrame {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setToolTipText("");
-		scrollPane.setBounds(0, 142, 745, 301);
-		panel_4.add(scrollPane);
+		//scrollPane.setBounds(0, 0, 1000, 200);
+		scrollPane.setPreferredSize(new Dimension(600, 60));
+		panel_9 = new JPanel();
+		panel_9.setLayout(new BorderLayout());
+	    
+		panel_9.setBounds(311, 442, 735, 266);
+		//panel_9.setPreferredSize(new Dimension(50, 40));
+		contentPane.add(panel_9);
+		
+		
+		
 		
 		table = new JTable();
-		table.setBounds(0, 0, 743, 0);
-		panel_4.add(table);
+		scrollPane.setViewportView(table);
+		panel_9.add(scrollPane, BorderLayout.CENTER);
 	}
 }
