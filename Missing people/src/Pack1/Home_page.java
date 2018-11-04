@@ -287,7 +287,7 @@ public class Home_page extends JFrame {
 				try {
 					Class.forName(driver);
 					Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
-					PreparedStatement stmt=conn.prepareStatement("SELECT * FROM `Finds` WHERE `Name` = '"+Name+"'");
+					PreparedStatement stmt=conn.prepareStatement("SELECT `Name`, `Location`, `Time` FROM `Finds` WHERE `Name` = '"+Name+"'");
 					ResultSet rs=stmt.executeQuery();
 					
 					System.out.println(rs);
