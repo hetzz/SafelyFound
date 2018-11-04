@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.Window;
+
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import java.awt.Component;
@@ -35,6 +37,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
@@ -130,6 +133,7 @@ public class MissingPeople  extends JFrame{
 		lblX.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				MissingPeople window=new MissingPeople();
 				System.exit(0);
 			}
 		});
@@ -276,23 +280,25 @@ public class MissingPeople  extends JFrame{
 					int age;
 					long mobile_no=Long.parseLong(textField_2.getText());
 					nameC=textField_1.getText();
-					date=dateChooser.getDateFormatString();
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					date = sdf.format(dateChooser.getDate());
 					relation=textField_3.getText();
 					age=Integer.parseInt(textField_4.getText());
 					nameM=textField.getText();
 					gender="Male";
 					if(rdbtnFemal.isSelected())
 						gender="Feamle";
+					System.out.println(nameM+" "+age+" "+gender+" "+date);
 					String driver="com.mysql.cj.jdbc.Driver";
 					Class.forName(driver);
 					Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
-					PreparedStatement strt=conn.prepareStatement("insert into Records_MissingPpl(?,?,?,?)");
+					PreparedStatement strt=conn.prepareStatement("insert into Records_MissingPpl values(?,?,?,?)");
 		            strt.setString(1, nameM);
 		            strt.setInt(2, age);
 		            strt.setString(3, gender);
 		            strt.setString(4,date);
 		            strt.execute();
-		            PreparedStatement str=conn.prepareStatement("insert into Records_Complainer(?,?,?,?)");
+		            PreparedStatement str=conn.prepareStatement("insert into Records_Complainer values(?,?,?,?)");
 		            str.setString(1, nameM);
 		            str.setString(2, nameC);
 		            str.setLong(3, mobile_no);
