@@ -27,6 +27,7 @@ import java.sql.Statement;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Component;
 
 public class Records extends JFrame {
 
@@ -68,21 +69,10 @@ public class Records extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblTheFindHistory = new JLabel("The find history of the person ");
+		JLabel lblTheFindHistory = new JLabel("Records of all the lost people");
 		lblTheFindHistory.setFont(new Font("Segoe UI", Font.BOLD, 23));
-		lblTheFindHistory.setBounds(66, 29, 413, 44);
+		lblTheFindHistory.setBounds(66, 29, 572, 44);
 		panel.add(lblTheFindHistory);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 88, 952, 360);
-		contentPane.add(scrollPane);
-		
-		table = new JTable();
-		table.setCellSelectionEnabled(true);
-		table.setColumnSelectionAllowed(true);
-		table.setBackground(new Color(255, 255, 255));
-		table.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		scrollPane.setViewportView(table);
 		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(Records.class.getResource("/Pack1/Images/icons8_Marker_52px_1.png")));
@@ -106,10 +96,23 @@ public class Records extends JFrame {
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
-		JButton btnClick = new JButton("Click");
+		JButton btnClick = new JButton("Click here to view Records");
+		btnClick.setBackground(new Color(255, 255, 204));
 		btnClick.setFont(new Font("Segoe UI", Font.BOLD, 22));
-		btnClick.setBounds(362, 376, 180, 57);
+		btnClick.setBounds(15, 376, 345, 57);
 		panel_1.add(btnClick);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 88, 952, 360);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		table.setRowHeight(24);
+		table.setCellSelectionEnabled(true);
+		table.setColumnSelectionAllowed(true);
+		table.setBackground(new Color(255, 255, 255));
+		table.setFont(new Font("Segoe UI Light", Font.BOLD, 20));
+		scrollPane.setViewportView(table);
 		btnClick.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String driver="com.mysql.cj.jdbc.Driver";
