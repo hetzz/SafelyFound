@@ -6,6 +6,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import net.proteanit.sql.DbUtils;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -19,13 +26,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseAdapter;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import java.awt.SystemColor;
 
 public class Home_page extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -70,6 +86,11 @@ public class Home_page extends JFrame {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				panel_1.setBackground(new Color(153, 102, 204));
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Records r=new Records();
+				r.setVisible(true);
 			}
 		});
 		panel_1.setBounds(0, 147, 310, 60);
@@ -158,16 +179,96 @@ public class Home_page extends JFrame {
 		panel_6.add(label_3);
 		
 		JLabel lblDeleteRecord = new JLabel("      Delete Record");
-		lblDeleteRecord.setForeground(new Color(0, 0, 0));
+		lblDeleteRecord.setForeground(new Color(51, 51, 51));
 		lblDeleteRecord.setFont(new Font("Franklin Gothic Demi", Font.PLAIN, 22));
 		lblDeleteRecord.setBackground(new Color(102, 0, 204));
 		lblDeleteRecord.setBounds(15, 0, 252, 60);
 		panel_6.add(lblDeleteRecord);
 		
-		JLabel lblCheckYourLoved = new JLabel("Check Status");
-		lblCheckYourLoved.setFont(new Font("Tahoma", Font.BOLD, 19));
-		lblCheckYourLoved.setBounds(374, 288, 466, 57);
-		contentPane.add(lblCheckYourLoved);
+		JPanel panel_7 = new JPanel();
+		panel_7.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				panel_7.setBackground(new Color(204, 153, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				panel_7.setBackground(new Color(153, 102, 204));	
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					HttpResponse<JsonNode> startR = Unirest.post("https://oopmproj4751.localtunnel.me/start")
+					        .header("Content-Type", "application/json")
+					        .header("accept", "application/json")
+					        .body("{\"key\":\"!!MyKey@123eOOPM\"}")
+					        .asJson();
+				} catch (UnirestException er) {
+					// TODO Auto-generated catch block
+					er.printStackTrace();
+				}
+				
+			}
+		});
+		panel_7.setLayout(null);
+		panel_7.setBackground(new Color(153, 102, 204));
+		panel_7.setBounds(0, 350, 310, 60);
+		panel.add(panel_7);
+		
+		JLabel label_4 = new JLabel("");
+		label_4.setIcon(new ImageIcon(Home_page.class.getResource("/Pack1/Images/icons8_Wall_Mount_Camera_50px.png")));
+		label_4.setForeground(Color.WHITE);
+		label_4.setBounds(0, 0, 79, 60);
+		panel_7.add(label_4);
+		
+		JLabel lblStartSurveill = new JLabel("     Start Surveillance");
+		lblStartSurveill.setForeground(new Color(51, 51, 51));
+		lblStartSurveill.setFont(new Font("Franklin Gothic Demi", Font.PLAIN, 22));
+		lblStartSurveill.setBackground(new Color(102, 0, 204));
+		lblStartSurveill.setBounds(25, 0, 252, 60);
+		panel_7.add(lblStartSurveill);
+		
+		JPanel panel_8 = new JPanel();
+		panel_8.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				panel_8.setBackground(new Color(204, 153, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				panel_8.setBackground(new Color(153, 102, 204));	
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					HttpResponse<JsonNode> stopR = Unirest.post("https://oopmproj4751.localtunnel.me/stop")
+					        .header("Content-Type", "application/json")
+					        .header("accept", "application/json")
+					        .body("{\"key\":\"!!MyKey@123eOOPM\"}")
+					        .asJson();
+				} catch (UnirestException er) {
+					// TODO Auto-generated catch block
+					er.printStackTrace();
+				}
+			}
+		});
+		panel_8.setLayout(null);
+		panel_8.setBackground(new Color(153, 102, 204));
+		panel_8.setBounds(0, 417, 310, 60);
+		panel.add(panel_8);
+		
+		JLabel label_5 = new JLabel("");
+		label_5.setIcon(new ImageIcon(Home_page.class.getResource("/Pack1/Images/icons8_Stop_50px.png")));
+		label_5.setForeground(Color.WHITE);
+		label_5.setBounds(0, 0, 59, 60);
+		panel_8.add(label_5);
+		
+		JLabel lblStopSurveillance = new JLabel("     Stop Surveillance ");
+		lblStopSurveillance.setForeground(new Color(51, 51, 51));
+		lblStopSurveillance.setFont(new Font("Franklin Gothic Demi", Font.PLAIN, 22));
+		lblStopSurveillance.setBackground(new Color(102, 0, 204));
+		lblStopSurveillance.setBounds(25, 0, 252, 60);
+		panel_8.add(lblStopSurveillance);
 		
 		textField = new JTextField();
 		textField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
@@ -178,7 +279,23 @@ public class Home_page extends JFrame {
 		JButton button = new JButton("");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				String Name;
+				Name=textField.getText();
+				String driver="com.mysql.cj.jdbc.Driver";
+				try {
+					Class.forName(driver);
+					Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
+					PreparedStatement stmt=conn.prepareStatement("select * from Finds where Name='Name'");
+					ResultSet rs=stmt.executeQuery();
+					table.setModel(DbUtils.resultSetToTableModel(rs));	
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println("Hii");
 			}
 		});
 		button.setIcon(new ImageIcon(Home_page.class.getResource("/Pack1/Images/icons8_Search_48px.png")));
@@ -221,7 +338,22 @@ public class Home_page extends JFrame {
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBackground(Color.WHITE);
-		panel_4.setBounds(306, 262, 745, 430);
+		panel_4.setBounds(306, 265, 745, 443);
 		contentPane.add(panel_4);
+		panel_4.setLayout(null);
+		
+		JLabel lblCheckYourLoved = new JLabel("Check Status");
+		lblCheckYourLoved.setBounds(67, 26, 466, 57);
+		panel_4.add(lblCheckYourLoved);
+		lblCheckYourLoved.setFont(new Font("Tahoma", Font.BOLD, 19));
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setToolTipText("");
+		scrollPane.setBounds(0, 142, 745, 301);
+		panel_4.add(scrollPane);
+		
+		table = new JTable();
+		table.setBounds(0, 0, 743, 0);
+		panel_4.add(table);
 	}
 }

@@ -1,6 +1,7 @@
 package Pack1;
 
 import java.awt.BorderLayout;
+import java.sql.*;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -16,6 +17,9 @@ import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class DeleteRecord extends JFrame {
 
@@ -63,7 +67,8 @@ public class DeleteRecord extends JFrame {
 		label.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.exit(0);
+				
+				System.exit(ABORT);
 			}
 		});
 		label.setIcon(new ImageIcon(DeleteRecord.class.getResource("/Pack1/Images/icons8_Delete_50px_1.png")));
@@ -130,6 +135,34 @@ public class DeleteRecord extends JFrame {
 		panel_1.add(label_3);
 		
 		JButton btnDeleteRecord = new JButton("Delete Record");
+		btnDeleteRecord.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					String nameM,nameC;
+					int age;
+					long mobile_no=Long.parseLong(textField_2.getText());
+					nameM=textField.getText();
+					age=Integer.parseInt(textField_2.getText());
+					nameC=textField_1.getText();
+					System.out.println(nameM+" "+nameC+" "+age);
+					String driver="com.mysql.cj.jdbc.Driver";
+					Class.forName(driver);
+					Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
+					String query1 = "delete from Records_Complainer where NameC = ?";
+				      PreparedStatement Strt = conn.prepareStatement(query1);
+				      Strt.setString(1, nameC);
+				      Strt.execute();
+					 String query = "delete from Records_MissingPpl where Name = ?";
+				      PreparedStatement Stmt = conn.prepareStatement(query);
+				      Stmt.setString(1, nameM);
+				      Stmt.execute();
+				      
+		            
+					conn.close();
+					}catch(Exception e) {System.out.println(e);}
+				label_3.setText("The record has been deleted");
+			}
+		});
 		btnDeleteRecord.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
