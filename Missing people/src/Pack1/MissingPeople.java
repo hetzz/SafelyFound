@@ -264,7 +264,17 @@ public class MissingPeople  extends JFrame{
 		buttonGroup.add(rdbtnFemal);
 		rdbtnFemal.setFont(new Font("Segoe UI", Font.BOLD, 23));
 		
+
+		JLabel label_2 = new JLabel("");
+		label_2.setIcon(new ImageIcon(MissingPeople.class.getResource("/Pack1/Images/icons8_Checkmark_23px.png")));
+		label_2.setBounds(330, 266, 29, 31);
+		panel_2.add(label_2);
+		label_2.setVisible(false);
+		
+
+		
 		JButton btnUpload = new JButton("Upload");
+		btnUpload.setBackground(new Color(255, 255, 204));
 		btnUpload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser jFile=new JFileChooser();
@@ -319,6 +329,8 @@ public class MissingPeople  extends JFrame{
 						        .header("accept", "application/json")
 						        .body("{\"key\":\"!!MyKey@123eOOPM\", \"file\":\""+encodedfile+"\", \"name\":\""+name+"\", \"extension\":\""+extension+"\"}")
 								.asJson();
+						if((fileUpR.getBody().getObject().getString("uploaded")).equals("true"));
+							label_2.setVisible(true);
 					} catch (UnirestException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -347,7 +359,6 @@ public class MissingPeople  extends JFrame{
 		textField_4.setBounds(212, 106, 241, 31);
 		panel_2.add(textField_4);
 		
-
 		
 		
 		JPanel panel_3 = new JPanel();
@@ -427,7 +438,7 @@ public class MissingPeople  extends JFrame{
 			}
 			
 		});
-		btnAddRecord.setBackground(new Color(204, 204, 204));
+		btnAddRecord.setBackground(new Color(255, 255, 204));
 		btnAddRecord.setBounds(436, 194, 199, 83);
 		panel_3.add(btnAddRecord);
 		btnAddRecord.setFont(new Font("Franklin Gothic Book", Font.BOLD, 24));

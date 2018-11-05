@@ -97,7 +97,7 @@ public class Home_page extends JFrame {
 				r.setVisible(true);
 			}
 		});
-		panel_1.setBounds(0, 147, 310, 60);
+		panel_1.setBounds(0, 151, 310, 60);
 		panel_1.setBackground(new Color(153, 102, 204));
 		panel.add(panel_1);
 		panel_1.setLayout(null);
@@ -112,7 +112,7 @@ public class Home_page extends JFrame {
 		lblNewLabel_1.setBackground(new Color(102, 0, 204));
 		lblNewLabel_1.setForeground(new Color(51, 51, 51));
 		lblNewLabel_1.setFont(new Font("Franklin Gothic Demi", Font.PLAIN, 22));
-		lblNewLabel_1.setBounds(25, 0, 252, 60);
+		lblNewLabel_1.setBounds(27, 0, 252, 60);
 		panel_1.add(lblNewLabel_1);
 		
 		JPanel panel_5 = new JPanel();
@@ -136,7 +136,7 @@ public class Home_page extends JFrame {
 				
 			}
 		});
-		panel_5.setBounds(0, 215, 310, 60);
+		panel_5.setBounds(0, 212, 310, 60);
 		panel_5.setLayout(null);
 		panel_5.setBackground(new Color(153, 102, 204));
 		panel.add(panel_5);
@@ -171,7 +171,7 @@ public class Home_page extends JFrame {
 				d.setVisible(true);
 			}
 		});
-		panel_6.setBounds(0, 282, 310, 60);
+		panel_6.setBounds(0, 273, 310, 60);
 		panel_6.setLayout(null);
 		panel_6.setBackground(new Color(153, 102, 204));
 		panel.add(panel_6);
@@ -216,7 +216,7 @@ public class Home_page extends JFrame {
 		});
 		panel_7.setLayout(null);
 		panel_7.setBackground(new Color(153, 102, 204));
-		panel_7.setBounds(0, 350, 310, 60);
+		panel_7.setBounds(0, 334, 310, 60);
 		panel.add(panel_7);
 		
 		JLabel label_4 = new JLabel("");
@@ -258,7 +258,7 @@ public class Home_page extends JFrame {
 		});
 		panel_8.setLayout(null);
 		panel_8.setBackground(new Color(153, 102, 204));
-		panel_8.setBounds(0, 417, 310, 60);
+		panel_8.setBounds(0, 395, 310, 60);
 		panel.add(panel_8);
 		
 		JLabel label_5 = new JLabel("");

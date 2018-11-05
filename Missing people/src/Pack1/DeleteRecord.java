@@ -144,7 +144,6 @@ public class DeleteRecord extends JFrame {
 					nameM=textField.getText();
 					age=Integer.parseInt(textField_2.getText());
 					nameC=textField_1.getText();
-					System.out.println(nameM+" "+nameC+" "+age);
 					String driver="com.mysql.cj.jdbc.Driver";
 					Class.forName(driver);
 					Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
