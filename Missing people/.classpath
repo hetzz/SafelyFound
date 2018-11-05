@@ -23,5 +23,6 @@
 	<classpathentry kind="lib" path="C:/Users/Hetal/Desktop/Jar files/unirest-java-1.4.9.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Hetal/Desktop/Jar files/mysql-connector-java-8.0.12.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Hetal/Desktop/Jar files/rs2xml.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hetal/Desktop/Jar files/javax.mail-1.4.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

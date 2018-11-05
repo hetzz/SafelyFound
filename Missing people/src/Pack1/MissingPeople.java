@@ -161,7 +161,7 @@ public class MissingPeople  extends JFrame{
 		lblComplainersName.setBounds(29, 484, 241, 39);
 		frame.getContentPane().add(lblComplainersName);
 		
-		JLabel lblMobileNo = new JLabel("Mobile No.");
+		JLabel lblMobileNo = new JLabel("Email ID");
 		lblMobileNo.setForeground(new Color(0, 0, 0));
 		lblMobileNo.setFont(new Font("Segoe UI", Font.BOLD, 22));
 		lblMobileNo.setBounds(29, 539, 149, 39);
@@ -271,16 +271,17 @@ public class MissingPeople  extends JFrame{
 		panel_2.add(label_2);
 		label_2.setVisible(false);
 		
-
 		
+		int result=0;
+		JFileChooser jFile=new JFileChooser();
 		JButton btnUpload = new JButton("Upload");
 		btnUpload.setBackground(new Color(255, 255, 204));
 		btnUpload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser jFile=new JFileChooser();
+				
 				jFile.setDialogTitle("Choose an Image to upload" );
 				int result =jFile.showSaveDialog(null);
-				if(result== JFileChooser.APPROVE_OPTION)
+				/*if(result== JFileChooser.APPROVE_OPTION)
 				{
 					String encodedfile = null;
 					//Get this file path using JFileChooser instead
@@ -336,7 +337,7 @@ public class MissingPeople  extends JFrame{
 						e.printStackTrace();
 					}
 
-				}
+				}*/
 				
 			}
 		});
@@ -402,13 +403,13 @@ public class MissingPeople  extends JFrame{
 				
 				
 				try {
-					String nameM,nameC,date,gender,relation;
+					String nameM,nameC,date,gender,relation,emailId;
 					int age;
-					long mobile_no=Long.parseLong(textField_2.getText());
 					nameC=textField_1.getText();
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					date = sdf.format(dateChooser.getDate());
 					relation=textField_3.getText();
+					emailId=textField_2.getText();
 					age=Integer.parseInt(textField_4.getText());
 					nameM=textField.getText();
 					gender="Male";
@@ -427,12 +428,74 @@ public class MissingPeople  extends JFrame{
 		            PreparedStatement str=conn.prepareStatement("insert into Records_Complainer values(?,?,?,?)");
 		            str.setString(1, nameM);
 		            str.setString(2, nameC);
-		            str.setLong(3, mobile_no);
+		            str.setString(3, emailId);
 		            str.setString(4,relation);
 		            
 		            str.execute();
 		            
 					conn.close();
+					
+					if(result== JFileChooser.APPROVE_OPTION)
+					{
+						String encodedfile = null;
+						//Get this file path using JFileChooser instead
+						String filePath = jFile.getSelectedFile().getAbsolutePath();
+						File file = new File(filePath);
+						
+						System.out.println(file.length());
+						
+						String extension = "";
+						int i = filePath.lastIndexOf('.');
+						if (i > 0) {
+						    extension = filePath.substring(i+1);
+						}
+						
+						if (file.length() > 500000)
+						{
+							double compressionRatio=(0.85/file.length())*500000;
+							compress(file, compressionRatio);
+							file = new File("compressed_image.jpg");
+							extension = "jpg";
+						}
+						System.out.println(filePath);
+						
+						
+						Base64.Encoder encoder = Base64.getEncoder();
+					    try {
+					        FileInputStream fileInputStreamReader = new FileInputStream(file);
+					        byte[] bytes = new byte[(int)file.length()];
+					        fileInputStreamReader.read(bytes);
+					        encodedfile = encoder.encodeToString(bytes).toString();
+					        
+					    } catch (FileNotFoundException e) {
+					        // TODO Auto-generated catch block
+					        e.printStackTrace();
+					    } catch (IOException e) {
+					        // TODO Auto-generated catch block
+					        e.printStackTrace();
+					    }
+					    //System.out.println(encodedfile);
+					    
+						String name = textField.getText();
+						System.out.println(name+" "+extension);
+						try {
+							HttpResponse<JsonNode> fileUpR = Unirest.post("https://oopmproj4751.localtunnel.me/gpr")
+									.header("Content-Type", "application/json")
+							        .header("accept", "application/json")
+							        .body("{\"key\":\"!!MyKey@123eOOPM\", \"file\":\""+encodedfile+"\", \"name\":\""+name+"\", \"extension\":\""+extension+"\"}")
+									.asJson();
+							if((fileUpR.getBody().getObject().getString("uploaded")).equals("true"));
+								label_2.setVisible(true);
+						} catch (UnirestException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					}
+					
+					
+					Surveillance.stopSurveillance();
+					Surveillance.startSurveillance();
 					}catch(Exception e) {System.out.println(e);}
 				label_1.setText("Record added Successfully");
 			}
