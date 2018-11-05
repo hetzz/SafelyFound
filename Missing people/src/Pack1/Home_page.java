@@ -201,17 +201,7 @@ public class Home_page extends JFrame {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				try {
-					HttpResponse<JsonNode> startR = Unirest.post("https://oopmproj4751.localtunnel.me/start")
-					        .header("Content-Type", "application/json")
-					        .header("accept", "application/json")
-					        .body("{\"key\":\"!!MyKey@123eOOPM\"}")
-					        .asJson();
-				} catch (UnirestException er) {
-					// TODO Auto-generated catch block
-					er.printStackTrace();
-				}
-				
+				Surveillance.startSurveillance();
 			}
 		});
 		panel_7.setLayout(null);
@@ -244,16 +234,7 @@ public class Home_page extends JFrame {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				try {
-					HttpResponse<JsonNode> stopR = Unirest.post("https://oopmproj4751.localtunnel.me/stop")
-					        .header("Content-Type", "application/json")
-					        .header("accept", "application/json")
-					        .body("{\"key\":\"!!MyKey@123eOOPM\"}")
-					        .asJson();
-				} catch (UnirestException er) {
-					// TODO Auto-generated catch block
-					er.printStackTrace();
-				}
+				Surveillance.stopSurveillance();
 			}
 		});
 		panel_8.setLayout(null);
