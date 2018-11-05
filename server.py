@@ -6,6 +6,7 @@ import base64
 
 
 app = Flask(__name__) 
+
 port = '5000' 
 ct =0
 
@@ -57,7 +58,7 @@ def rawbytes(s):
 def fileup():
     print('request received  file')
     
-    d = {'type':'text', 'loc':'Delhi'}
+    d = {'type':'text', 'uploaded':'true'}
     # print(request.get_json())
     jreq = request.get_json()
     filename = ''.join(jreq['name'].split())
@@ -66,9 +67,14 @@ def fileup():
     with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), "wb") as fh:
         fh.write(base64.decodebytes(rawbytes(img_data)))
     
-    
+    d['filename'] = filename
     return jsonify(d)
 
+@app.route('/delete', methods = ['POST'])
+def delete_record():
+    jreq = request.get_json()
+    filename = jreq['filename']
+    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
 if __name__ == "__main__":
     app.run(port=port)

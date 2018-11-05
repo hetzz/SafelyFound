@@ -95,6 +95,7 @@ public class Home_page extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				Records r=new Records();
 				r.setVisible(true);
+				r.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			}
 		});
 		panel_1.setBounds(0, 147, 310, 60);
@@ -132,7 +133,7 @@ public class Home_page extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				MissingPeople p=new MissingPeople();
 				p.frame.setVisible(true);
-				
+				p.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 				
 			}
 		});
@@ -169,6 +170,7 @@ public class Home_page extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				DeleteRecord d=new DeleteRecord();
 				d.setVisible(true);
+				d.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			}
 		});
 		panel_6.setBounds(0, 282, 310, 60);
