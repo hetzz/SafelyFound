@@ -406,38 +406,7 @@ public class MissingPeople  extends JFrame{
 				
 				
 				try {
-					String nameM,nameC,date,gender,relation,emailId;
-					int age;
-					nameC=textField_1.getText();
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					date = sdf.format(dateChooser.getDate());
-					relation=textField_3.getText();
-					emailId=textField_2.getText();
-					age=Integer.parseInt(textField_4.getText());
-					nameM=textField.getText();
-					gender="Male";
-					if(rdbtnFemal.isSelected())
-						gender="Female";
-					
-					String driver="com.mysql.cj.jdbc.Driver";
-					Class.forName(driver);
-					Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
-					PreparedStatement strt=conn.prepareStatement("insert into Records_MissingPpl values(?,?,?,?)");
-		            strt.setString(1, nameM);
-		            strt.setInt(2, age);
-		            strt.setString(3, gender);
-		            strt.setString(4,date);
-		            strt.execute();
-		            PreparedStatement str=conn.prepareStatement("insert into Records_Complainer values(?,?,?,?)");
-		            str.setString(1, nameM);
-		            str.setString(2, nameC);
-		            str.setString(3, emailId);
-		            str.setString(4,relation);
-		            
-		            str.execute();
-		            
-					conn.close();
-					
+					String filenameRet="";
 					if(result== JFileChooser.APPROVE_OPTION)
 					{
 						String encodedfile = null;
@@ -487,14 +456,53 @@ public class MissingPeople  extends JFrame{
 							        .header("accept", "application/json")
 							        .body("{\"key\":\"!!MyKey@123eOOPM\", \"file\":\""+encodedfile+"\", \"name\":\""+name+"\", \"extension\":\""+extension+"\"}")
 									.asJson();
-							if((fileUpR.getBody().getObject().getString("uploaded")).equals("true"));
+							if((fileUpR.getBody().getObject().getString("uploaded")).equals("true"))
+							{
 								label_2.setVisible(true);
+								filenameRet = fileUpR.getBody().getObject().getString("filename");
+							}
+								
 						} catch (UnirestException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 
 					}
+					if(filenameRet.equals("")) return;
+					String nameM,nameC,date,gender,relation,emailId;
+					int age;
+					nameC=textField_1.getText();
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					date = sdf.format(dateChooser.getDate());
+					relation=textField_3.getText();
+					emailId=textField_2.getText();
+					age=Integer.parseInt(textField_4.getText());
+					nameM=textField.getText();
+					gender="Male";
+					if(rdbtnFemal.isSelected())
+						gender="Female";
+					
+					String driver="com.mysql.cj.jdbc.Driver";
+					Class.forName(driver);
+					Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
+					PreparedStatement strt=conn.prepareStatement("insert into Records_MissingPpl values(?,?,?,?)");
+		            strt.setString(1, nameM);
+		            strt.setInt(2, age);
+		            strt.setString(3, gender);
+		            strt.setString(4,date);
+		            strt.setString(5,  filenameRet);
+		            strt.execute();
+		            PreparedStatement str=conn.prepareStatement("insert into Records_Complainer values(?,?,?,?)");
+		            str.setString(1, nameM);
+		            str.setString(2, nameC);
+		            str.setString(3, emailId);
+		            str.setString(4,relation);
+		            
+		            
+		            str.execute();
+		            
+					conn.close();
+					
 					
 					
 					Surveillance.stopSurveillance();
