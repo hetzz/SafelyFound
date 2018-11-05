@@ -32,16 +32,25 @@ import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.components.JLocaleChooser;
 import javax.swing.JRadioButton;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
+import javax.print.attribute.standard.Compression;
 import javax.swing.ButtonGroup;
 import com.toedter.calendar.JDayChooser;
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -49,6 +58,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
@@ -66,7 +76,39 @@ public class MissingPeople  extends JFrame{
 
 	/**
 	 * Launch the application.
+	 * @throws IOException 
 	 */
+	public static void compress(File f, double compressionRatio) 
+	{
+		try {
+			File input = f;
+		    BufferedImage image = ImageIO.read(input);
+	
+		    File compressedImageFile = new File("compressed_image.jpg");
+		    OutputStream os = new FileOutputStream(compressedImageFile);
+	
+		    Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
+		    ImageWriter writer = (ImageWriter) writers.next();
+	
+		    ImageOutputStream ios = ImageIO.createImageOutputStream(os);
+		    writer.setOutput(ios);
+	
+		    ImageWriteParam param = writer.getDefaultWriteParam();
+	
+		    param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+		    param.setCompressionQuality(0.4f);  // Change the quality value you prefer
+		    writer.write(null, new IIOImage(image, null, null), param);
+	
+		    os.close();
+		    ios.close();
+		    writer.dispose();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	  }
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -144,7 +186,6 @@ public class MissingPeople  extends JFrame{
 		lblX.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				MissingPeople window=new MissingPeople();
 				System.exit(0);
 			}
 		});
@@ -223,7 +264,17 @@ public class MissingPeople  extends JFrame{
 		buttonGroup.add(rdbtnFemal);
 		rdbtnFemal.setFont(new Font("Segoe UI", Font.BOLD, 23));
 		
+
+		JLabel label_2 = new JLabel("");
+		label_2.setIcon(new ImageIcon(MissingPeople.class.getResource("/Pack1/Images/icons8_Checkmark_23px.png")));
+		label_2.setBounds(330, 266, 29, 31);
+		panel_2.add(label_2);
+		label_2.setVisible(false);
+		
+
+		
 		JButton btnUpload = new JButton("Upload");
+		btnUpload.setBackground(new Color(255, 255, 204));
 		btnUpload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser jFile=new JFileChooser();
@@ -236,11 +287,23 @@ public class MissingPeople  extends JFrame{
 					String filePath = jFile.getSelectedFile().getAbsolutePath();
 					File file = new File(filePath);
 					
+					System.out.println(file.length());
+					
 					String extension = "";
 					int i = filePath.lastIndexOf('.');
 					if (i > 0) {
 					    extension = filePath.substring(i+1);
 					}
+					
+					if (file.length() > 500000)
+					{
+						double compressionRatio=(0.85/file.length())*500000;
+						compress(file, compressionRatio);
+						file = new File("compressed_image.jpg");
+						extension = "jpg";
+					}
+					System.out.println(filePath);
+					
 					
 					Base64.Encoder encoder = Base64.getEncoder();
 				    try {
@@ -256,15 +319,18 @@ public class MissingPeople  extends JFrame{
 				        // TODO Auto-generated catch block
 				        e.printStackTrace();
 				    }
-				    
+				    //System.out.println(encodedfile);
 				    
 					String name = textField.getText();
+					System.out.println(name+" "+extension);
 					try {
 						HttpResponse<JsonNode> fileUpR = Unirest.post("https://oopmproj4751.localtunnel.me/gpr")
 								.header("Content-Type", "application/json")
 						        .header("accept", "application/json")
 						        .body("{\"key\":\"!!MyKey@123eOOPM\", \"file\":\""+encodedfile+"\", \"name\":\""+name+"\", \"extension\":\""+extension+"\"}")
 								.asJson();
+						if((fileUpR.getBody().getObject().getString("uploaded")).equals("true"));
+							label_2.setVisible(true);
 					} catch (UnirestException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -293,7 +359,6 @@ public class MissingPeople  extends JFrame{
 		textField_4.setBounds(212, 106, 241, 31);
 		panel_2.add(textField_4);
 		
-
 		
 		
 		JPanel panel_3 = new JPanel();
@@ -373,7 +438,7 @@ public class MissingPeople  extends JFrame{
 			}
 			
 		});
-		btnAddRecord.setBackground(new Color(204, 204, 204));
+		btnAddRecord.setBackground(new Color(255, 255, 204));
 		btnAddRecord.setBounds(436, 194, 199, 83);
 		panel_3.add(btnAddRecord);
 		btnAddRecord.setFont(new Font("Franklin Gothic Book", Font.BOLD, 24));
