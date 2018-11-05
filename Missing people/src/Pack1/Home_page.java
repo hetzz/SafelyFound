@@ -133,7 +133,7 @@ public class Home_page extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				MissingPeople p=new MissingPeople();
 				p.frame.setVisible(true);
-				p.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				
 				
 			}
 		});

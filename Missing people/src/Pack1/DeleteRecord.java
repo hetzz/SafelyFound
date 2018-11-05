@@ -12,6 +12,7 @@ import java.awt.Font;
 import java.awt.Color;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
@@ -20,6 +21,7 @@ import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
 
 public class DeleteRecord extends JFrame {
 
@@ -27,7 +29,8 @@ public class DeleteRecord extends JFrame {
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
-
+	private JCheckBox chckbxSendAnEmail;
+	JLabel label_4;
 	/**
 	 * Launch the application.
 	 */
@@ -68,7 +71,9 @@ public class DeleteRecord extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				System.exit(ABORT);
+				JFrame frex = (JFrame) SwingUtilities.getRoot(e.getComponent());
+				frex.setVisible(false);
+				frex.dispose();
 			}
 		});
 		label.setIcon(new ImageIcon(DeleteRecord.class.getResource("/Pack1/Images/icons8_Delete_50px_1.png")));
@@ -98,10 +103,10 @@ public class DeleteRecord extends JFrame {
 		lblComplainersName.setBounds(51, 163, 260, 30);
 		panel_1.add(lblComplainersName);
 		lblComplainersName.setForeground(Color.BLACK);
-		lblComplainersName.setFont(new Font("Segoe UI", Font.BOLD, 22));
+		lblComplainersName.setFont(new Font("Segoe UI", Font.BOLD, 23));
 		
 		JLabel lblMissingPersonsName = new JLabel("Missing Person's Name");
-		lblMissingPersonsName.setBounds(51, 41, 260, 39);
+		lblMissingPersonsName.setBounds(51, 34, 260, 39);
 		panel_1.add(lblMissingPersonsName);
 		lblMissingPersonsName.setForeground(Color.BLACK);
 		lblMissingPersonsName.setFont(new Font("Segoe UI", Font.BOLD, 23));
@@ -137,6 +142,27 @@ public class DeleteRecord extends JFrame {
 		JButton btnDeleteRecord = new JButton("Delete Record");
 		btnDeleteRecord.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if(chckbxSendAnEmail.isSelected())
+				{
+					String driver="com.mysql.cj.jdbc.Driver";
+					try {
+						Class.forName(driver);
+					
+					Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
+					
+					 PreparedStatement strt = conn.prepareStatement("SELECT * FROM `Records_MissingPpl` WHERE `Name` = '"+textField.getText()+"'");
+					 ResultSet rs=strt.executeQuery();
+					 System.out.println(rs.getString(3));
+					 SentEmail s=new SentEmail(rs.getString(3),"Some good news","Your kid has been found!!!! WE LOVED TO HELP YOU FIND YOUR LOVED ONE");
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					label_4.setText("Email Sent Successfully");
+				}
 				try {
 					String nameM,nameC;
 					int age;
@@ -168,7 +194,7 @@ public class DeleteRecord extends JFrame {
 				label_3.setText("Record Deleted");
 			}
 		});
-		btnDeleteRecord.setFont(new Font("Franklin Gothic Book", Font.BOLD, 24));
+		btnDeleteRecord.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		btnDeleteRecord.setBackground(new Color(255, 255, 204));
 		btnDeleteRecord.setBounds(436, 318, 199, 83);
 		panel_1.add(btnDeleteRecord);
@@ -181,37 +207,16 @@ public class DeleteRecord extends JFrame {
 		textField_2.setBounds(325, 106, 241, 31);
 		panel_1.add(textField_2);
 		
-		JLabel label_4 = new JLabel("");
+		label_4 = new JLabel("");
 		label_4.setBounds(298, 263, 123, 39);
 		panel_1.add(label_4);
 		
-		JButton btnSendAnEmail = new JButton("Send an email");
-		btnSendAnEmail.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String driver="com.mysql.cj.jdbc.Driver";
-				try {
-					Class.forName(driver);
-				
-				Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
-				
-				 PreparedStatement strt = conn.prepareStatement("SELECT * FROM `Records_MissingPpl` WHERE `Name` = '"+textField.getText()+"'");
-				 ResultSet rs=strt.executeQuery();
-				 System.out.println(rs.getString(3));
-				SentEmail s=new SentEmail(rs.getString(3),"Some good news","Your kid has been found!!!! WE LOVED TO HELP YOU FIND YOUR LOVED ONE");
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				label_4.setText("Email Sent Successfully");
-			}
-		});
-		btnSendAnEmail.setBackground(new Color(255, 255, 204));
-		btnSendAnEmail.setFont(new Font("Franklin Gothic Book", Font.BOLD, 20));
-		btnSendAnEmail.setBounds(436, 263, 199, 39);
-		panel_1.add(btnSendAnEmail);
+		chckbxSendAnEmail = new JCheckBox("Send an email");
+		chckbxSendAnEmail.setBackground(Color.WHITE);
+		chckbxSendAnEmail.setSelected(true);
+		chckbxSendAnEmail.setFont(new Font("Dialog", Font.BOLD, 17));
+		chckbxSendAnEmail.setBounds(436, 286, 199, 23);
+		panel_1.add(chckbxSendAnEmail);
 		
 		
 		

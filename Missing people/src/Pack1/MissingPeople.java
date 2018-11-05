@@ -14,6 +14,7 @@ import javax.swing.JTextPane;
 import java.awt.Component;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
@@ -186,7 +187,9 @@ public class MissingPeople  extends JFrame{
 		lblX.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				System.exit(0);
+				JFrame frex = (JFrame) SwingUtilities.getRoot(arg0.getComponent());
+				frex.setVisible(false);
+				frex.dispose();
 			}
 		});
 		lblX.setFont(new Font("Franklin Gothic Book", Font.BOLD, 27));

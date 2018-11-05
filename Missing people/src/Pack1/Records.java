@@ -11,6 +11,7 @@ import net.proteanit.sql.DbUtils;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.Color;
@@ -83,7 +84,9 @@ public class Records extends JFrame {
 		label_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				System.exit(0);
+				JFrame frex = (JFrame) SwingUtilities.getRoot(arg0.getComponent());
+				frex.setVisible(false);
+				frex.dispose();
 			}
 		});
 		label_1.setIcon(new ImageIcon(Records.class.getResource("/Pack1/Images/icons8_Delete_50px_1.png")));
