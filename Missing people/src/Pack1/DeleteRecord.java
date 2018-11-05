@@ -131,7 +131,7 @@ public class DeleteRecord extends JFrame {
 		
 		JLabel label_3 = new JLabel("");
 		label_3.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		label_3.setBounds(51, 276, 314, 50);
+		label_3.setBounds(107, 351, 314, 50);
 		panel_1.add(label_3);
 		
 		JButton btnDeleteRecord = new JButton("Delete Record");
@@ -144,7 +144,6 @@ public class DeleteRecord extends JFrame {
 					nameM=textField.getText();
 					age=Integer.parseInt(textField_2.getText());
 					nameC=textField_1.getText();
-					System.out.println(nameM+" "+nameC+" "+age);
 					String driver="com.mysql.cj.jdbc.Driver";
 					Class.forName(driver);
 					Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
@@ -170,8 +169,8 @@ public class DeleteRecord extends JFrame {
 			}
 		});
 		btnDeleteRecord.setFont(new Font("Franklin Gothic Book", Font.BOLD, 24));
-		btnDeleteRecord.setBackground(new Color(204, 204, 204));
-		btnDeleteRecord.setBounds(436, 264, 199, 83);
+		btnDeleteRecord.setBackground(new Color(255, 255, 204));
+		btnDeleteRecord.setBounds(436, 318, 199, 83);
 		panel_1.add(btnDeleteRecord);
 		
 		textField_2 = new JTextField();
@@ -181,6 +180,40 @@ public class DeleteRecord extends JFrame {
 		textField_2.setBackground(Color.WHITE);
 		textField_2.setBounds(325, 106, 241, 31);
 		panel_1.add(textField_2);
+		
+		JLabel label_4 = new JLabel("");
+		label_4.setBounds(298, 263, 123, 39);
+		panel_1.add(label_4);
+		
+		JButton btnSendAnEmail = new JButton("Send an email");
+		btnSendAnEmail.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String driver="com.mysql.cj.jdbc.Driver";
+				try {
+					Class.forName(driver);
+				
+				Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
+				
+				 PreparedStatement strt = conn.prepareStatement("SELECT * FROM `Records_MissingPpl` WHERE `Name` = '"+textField.getText()+"'");
+				 ResultSet rs=strt.executeQuery();
+				 System.out.println(rs.getString(3));
+				SentEmail s=new SentEmail(rs.getString(3),"Some good news","Your kid has been found!!!! WE LOVED TO HELP YOU FIND YOUR LOVED ONE");
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				label_4.setText("Email Sent Successfully");
+			}
+		});
+		btnSendAnEmail.setBackground(new Color(255, 255, 204));
+		btnSendAnEmail.setFont(new Font("Franklin Gothic Book", Font.BOLD, 20));
+		btnSendAnEmail.setBounds(436, 263, 199, 39);
+		panel_1.add(btnSendAnEmail);
+		
+		
 		
 		
 	}
