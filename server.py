@@ -3,7 +3,7 @@ import threading
 from . import facerecog
 import os
 import base64
-
+import struct
 
 app = Flask(__name__) 
 
@@ -34,13 +34,13 @@ def index():
     return jsonify(d)
 
 
-@app.route('/stop', methods = ['GET','POST'])
+@app.route('/stop', methods = ['POST'])
 def stop():
     facerecog.stop = True
     
     return jsonify({'stopped': True})
 
-import struct
+
 
 def rawbytes(s):
     """Convert a string to raw bytes without encoding"""
@@ -82,6 +82,22 @@ def delete_record():
         d['acr']='accepted'
     except:
         return jsonify(d)
+    
+    return jsonify(d)
+
+@app.route('/wsid', methods = ['POST'])
+def wsid():
+    d = {}
+    if not facerecog.started:
+        d['wsid']='stop'
+    else:
+        d['wsid']='start'
+        frke = []
+        for e in facerecog.known_face_encodings:
+            frke.append(e.tolist())
+        d['encodings']=frke
+        d['names'] = facerecog.known_face_names
+        d['length'] =len(facerecog.known_face_names)
     
     return jsonify(d)
 

@@ -1,5 +1,7 @@
 package Pack1;
 
+import org.apache.http.NoHttpResponseException;
+
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -16,7 +18,6 @@ public class Surveillance {
 			        .body("{\"key\":\"!!MyKey@123eOOPM\"}")
 			        .asJson();
 		} catch (UnirestException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -29,8 +30,26 @@ public class Surveillance {
 			        .body("{\"key\":\"!!MyKey@123eOOPM\"}")
 			        .asJson();
 		} catch (UnirestException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			if(e.getCause() instanceof NoHttpResponseException) {
+				try {
+					Thread.sleep(30);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				
+				try {
+					HttpResponse<JsonNode> stopR1 = Unirest.post("https://oopmproj4751.localtunnel.me/stop")
+					        .header("Content-Type", "application/json")
+					        .header("accept", "application/json")
+					        .body("{\"key\":\"!!MyKey@123eOOPM\"}")
+					        .asJson();
+				} catch (UnirestException e2) {
+					e2.printStackTrace();
+				}
+			}
+			
+			
 		}
 	}
 
