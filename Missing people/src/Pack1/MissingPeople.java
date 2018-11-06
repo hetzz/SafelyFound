@@ -485,7 +485,7 @@ public class MissingPeople  extends JFrame{
 					String driver="com.mysql.cj.jdbc.Driver";
 					Class.forName(driver);
 					Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
-					PreparedStatement strt=conn.prepareStatement("insert into Records_MissingPpl values(?,?,?,?)");
+					PreparedStatement strt=conn.prepareStatement("insert into Records_MissingPpl values(?,?,?,?,?)");
 		            strt.setString(1, nameM);
 		            strt.setInt(2, age);
 		            strt.setString(3, gender);

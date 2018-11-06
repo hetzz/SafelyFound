@@ -144,6 +144,14 @@ public class DeleteRecord extends JFrame {
 		label_3.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		label_3.setBounds(107, 351, 314, 50);
 		panel_1.add(label_3);
+		
+		chckbxSendAnEmail = new JCheckBox("Send an email");
+		chckbxSendAnEmail.setBackground(Color.WHITE);
+		chckbxSendAnEmail.setSelected(true);
+		chckbxSendAnEmail.setFont(new Font("Dialog", Font.BOLD, 17));
+		chckbxSendAnEmail.setBounds(436, 286, 199, 23);
+		panel_1.add(chckbxSendAnEmail);
+
 
 		JButton btnDeleteRecord = new JButton("Delete Record");
 		btnDeleteRecord.addActionListener(new ActionListener() {
@@ -186,13 +194,8 @@ public class DeleteRecord extends JFrame {
 						Stmt.execute();
 
 						conn.close();
-						try {
-							HttpResponse<JsonNode> startR = Unirest.post("http://oopmproj4751.localtunnel.me/delete")
-									.header("Content-Type", "application/json").header("accept", "application/json")
-									.body("{\"key\":\"!!MyKey@123eOOPM\", \"filename\":\""+filename+"\"}").asJson();
-						} catch (UnirestException e) {
-							e.printStackTrace();
-						}
+						Surveillance.stopSurveillance();
+						Surveillance.startSurveillance();
 						label_3.setText("The record has been deleted");
 					} catch (Exception e) {
 						System.out.println(e);
@@ -230,12 +233,6 @@ public class DeleteRecord extends JFrame {
 		label_4.setBounds(298, 263, 123, 39);
 		panel_1.add(label_4);
 
-		chckbxSendAnEmail = new JCheckBox("Send an email");
-		chckbxSendAnEmail.setBackground(Color.WHITE);
-		chckbxSendAnEmail.setSelected(true);
-		chckbxSendAnEmail.setFont(new Font("Dialog", Font.BOLD, 17));
-		chckbxSendAnEmail.setBounds(436, 286, 199, 23);
-		panel_1.add(chckbxSendAnEmail);
-
+		
 	}
 }
