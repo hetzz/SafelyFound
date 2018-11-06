@@ -180,7 +180,7 @@ public class DeleteRecord extends JFrame {
 					PreparedStatement str = conn.prepareStatement(
 							"SELECT * FROM Records_Complainer WHERE NameM = ?");
 					strt.setString(1,textField.getText());
-					ResultSet r = strt.executeQuery();
+					ResultSet r = str.executeQuery();
 					r.next();
 					if (chckbxSendAnEmail.isSelected()) {
 						SentEmail s = new SentEmail(r.getString(3), "Some good news",
@@ -209,6 +209,16 @@ public class DeleteRecord extends JFrame {
 						Stmt.execute();
 
 						conn.close();
+						try {
+							HttpResponse<JsonNode> deleteR = Unirest.post("https://oopmproj4751.localtunnel.me/delete")
+							        .header("Content-Type", "application/json")
+							        .header("accept", "application/json")
+							        .body("{\"key\":\"!!MyKey@123eOOPM\", \"filename\":\""+filename+"\"}")
+							        .asJson();
+						} catch (UnirestException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						Surveillance.stopSurveillance();
 						Surveillance.startSurveillance();
 						label_3.setText("The record has been deleted");
