@@ -14,21 +14,23 @@ UPLOAD_FOLDER = 'knownfaces'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
+facerecog.stop = True
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/start', methods = ['POST'])
 def index():
     print('request received', request.remote_addr)
-    #print(request.get_json( )['name'], request.get_json( )['age'])
+    d = {'acr':'rejected'}
     print(request.get_json())
+    if facerecog.stop == False:
+        return jsonify(d)
     facerecog.stop=False
     global ct
     t1 = threading.Thread(target=facerecog.main, args=[ct])
     t1.start()
     ct+=1
-    d = {'type':'text', 'loc':'Delhi'}
+    d['acr']= 'accepeted'
     return jsonify(d)
 
 
@@ -72,9 +74,16 @@ def fileup():
 
 @app.route('/delete', methods = ['POST'])
 def delete_record():
+    d = {'acr':'rejected'}
     jreq = request.get_json()
     filename = jreq['filename']
-    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    try:
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        d['acr']='accepted'
+    except:
+        return jsonify(d)
+    
+    return jsonify(d)
 
 if __name__ == "__main__":
     app.run(port=port)

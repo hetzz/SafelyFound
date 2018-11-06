@@ -179,7 +179,7 @@ public class DeleteRecord extends JFrame {
 					String filename =rs.getString(5);
 					PreparedStatement str = conn.prepareStatement(
 							"SELECT * FROM Records_Complainer WHERE NameM = ?");
-					strt.setString(1,textField.getText());
+					str.setString(1,textField.getText());
 					ResultSet r = str.executeQuery();
 					r.next();
 					if (chckbxSendAnEmail.isSelected()) {
