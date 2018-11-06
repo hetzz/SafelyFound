@@ -131,6 +131,14 @@ public class DeleteRecord extends JFrame {
 		textField.setBackground(Color.WHITE);
 		textField.setBounds(325, 41, 241, 31);
 		panel_1.add(textField);
+		
+		textField_2 = new JTextField();
+		textField_2.setForeground(Color.BLACK);
+		textField_2.setFont(new Font("Tahoma", Font.BOLD, 20));
+		textField_2.setColumns(10);
+		textField_2.setBackground(Color.WHITE);
+		textField_2.setBounds(325, 106, 241, 31);
+		panel_1.add(textField_2);
 
 		textField_1 = new JTextField();
 		textField_1.setForeground(Color.BLACK);
@@ -163,12 +171,19 @@ public class DeleteRecord extends JFrame {
 					Connection conn = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj",
 							"akshay_07cf", "@kshayps9");
 					PreparedStatement strt = conn.prepareStatement(
-							"SELECT * FROM `Records_MissingPpl` WHERE `Name` = '" + textField.getText() + "'");
+							"SELECT * FROM Records_MissingPpl WHERE Name = ?");
+					strt.setString(1,textField.getText());
 					ResultSet rs = strt.executeQuery();
+					rs.next();
 					System.out.println(rs.getString(3)+" "+rs.getString(5));
-					String filename =rs.getString(4);
+					String filename =rs.getString(5);
+					PreparedStatement str = conn.prepareStatement(
+							"SELECT * FROM Records_Complainer WHERE NameM = ?");
+					strt.setString(1,textField.getText());
+					ResultSet r = strt.executeQuery();
+					r.next();
 					if (chckbxSendAnEmail.isSelected()) {
-						SentEmail s = new SentEmail(rs.getString(3), "Some good news",
+						SentEmail s = new SentEmail(r.getString(3), "Some good news",
 								"Your kid has been found!!!! WE LOVED TO HELP YOU FIND YOUR LOVED ONE");
 
 						label_4.setText("Email Sent Successfully");
@@ -220,14 +235,6 @@ public class DeleteRecord extends JFrame {
 		btnDeleteRecord.setBackground(new Color(255, 255, 204));
 		btnDeleteRecord.setBounds(436, 318, 199, 83);
 		panel_1.add(btnDeleteRecord);
-
-		textField_2 = new JTextField();
-		textField_2.setForeground(Color.BLACK);
-		textField_2.setFont(new Font("Tahoma", Font.BOLD, 20));
-		textField_2.setColumns(10);
-		textField_2.setBackground(Color.WHITE);
-		textField_2.setBounds(325, 106, 241, 31);
-		panel_1.add(textField_2);
 
 		label_4 = new JLabel("");
 		label_4.setBounds(298, 263, 123, 39);
