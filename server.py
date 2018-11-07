@@ -115,13 +115,14 @@ def wsid():
         decideStartStop(d)
     elif jreq['clientstat'] == 'stopped':
         decideStartStop(d)
+        updated[jreq['clientid']] = True
     elif jreq['clientstat'] == 'running':
-        if not updated[jreq['cliendid']]:
-            d['wsid'] == 'stop'
-            updated[jreq['cliendid']] = True
+        if not updated[jreq['clientid']]:
+            d['wsid'] = 'stop'
+            updated[jreq['clientid']] = True
         else:
             decideStartStop(d)
-    print(d)
+    # print(d)
     return jsonify(d)
 
 
