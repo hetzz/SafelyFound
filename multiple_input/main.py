@@ -4,6 +4,7 @@ import time
 import threading
 import facerecogsub
 import json
+
 def wsid():
     started = False
     t1 = None
@@ -29,6 +30,7 @@ def wsid():
                 known_face_encodings[i]=np.array(known_face_encodings[i])
             
             started = True
+            facerecogsub.stop = False
             clientstat = 'running'
             t1 = threading.Thread(target=facerecogsub.main, args=[ct, known_face_encodings, known_face_names])
             t1.start()
