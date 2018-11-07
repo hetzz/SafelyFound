@@ -15,6 +15,10 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 facerecog.stop = True
+
+clients = []
+updated = []
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -37,7 +41,8 @@ def index():
 @app.route('/stop', methods = ['POST'])
 def stop():
     facerecog.stop = True
-    
+    global updated
+    updated = [False]*len(updated)
     return jsonify({'stopped': True})
 
 
@@ -56,12 +61,12 @@ def rawbytes(s):
             H = num & 0xFFFF
             outlist.append(struct.pack('>bH', b, H))
     return b''.join(outlist)
+
 @app.route('/gpr', methods = ['POST'])
 def fileup():
     print('request received  file')
     
     d = {'type':'text', 'uploaded':'true'}
-    # print(request.get_json())
     jreq = request.get_json()
     filename = ''.join(jreq['name'].split())
     filename += '.'+jreq['extension']
@@ -85,11 +90,9 @@ def delete_record():
     
     return jsonify(d)
 
-@app.route('/wsid', methods = ['POST'])
-def wsid():
-    d = {}
+def decideStartStop(d):
     if not facerecog.started:
-        d['wsid']='stop'
+            d['wsid'] = 'stop'
     else:
         d['wsid']='start'
         frke = []
@@ -98,8 +101,29 @@ def wsid():
         d['encodings']=frke
         d['names'] = facerecog.known_face_names
         d['length'] =len(facerecog.known_face_names)
-    
+
+@app.route('/wsid', methods = ['POST'])
+def wsid():
+    d = {}
+    jreq = request.get_json()
+    print(jreq)
+    if jreq['clientstat'] == 'new':
+        newcid = len(clients)
+        clients.append(newcid)
+        updated.append(True)
+        d['clientid'] = newcid
+        decideStartStop(d)
+    elif jreq['clientstat'] == 'stopped':
+        decideStartStop(d)
+    elif jreq['clientstat'] == 'running':
+        if not updated[jreq['cliendid']]:
+            d['wsid'] == 'stop'
+            updated[jreq['cliendid']] = True
+        else:
+            decideStartStop(d)
+    print(d)
     return jsonify(d)
+
 
 if __name__ == "__main__":
     app.run(port=port)
