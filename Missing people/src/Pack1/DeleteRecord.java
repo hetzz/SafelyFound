@@ -175,7 +175,6 @@ public class DeleteRecord extends JFrame {
 					strt.setString(1,textField.getText());
 					ResultSet rs = strt.executeQuery();
 					rs.next();
-					System.out.println(rs.getString(3)+" "+rs.getString(5));
 					String filename =rs.getString(5);
 					PreparedStatement str = conn.prepareStatement(
 							"SELECT * FROM Records_Complainer WHERE NameM = ?");

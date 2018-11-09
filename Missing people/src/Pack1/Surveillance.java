@@ -1,11 +1,19 @@
 package Pack1;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.apache.http.NoHttpResponseException;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+
+import net.proteanit.sql.DbUtils;
 
 public class Surveillance {
 
@@ -53,5 +61,5 @@ public class Surveillance {
 		}
 	}
 
-
+	
 }

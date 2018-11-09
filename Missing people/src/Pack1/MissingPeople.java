@@ -414,7 +414,6 @@ public class MissingPeople  extends JFrame{
 						String filePath = jFile.getSelectedFile().getAbsolutePath();
 						File file = new File(filePath);
 						
-						System.out.println(file.length());
 						
 						String extension = "";
 						int i = filePath.lastIndexOf('.');
@@ -429,7 +428,6 @@ public class MissingPeople  extends JFrame{
 							file = new File("compressed_image.jpg");
 							extension = "jpg";
 						}
-						System.out.println(filePath);
 						
 						
 						Base64.Encoder encoder = Base64.getEncoder();
@@ -449,7 +447,6 @@ public class MissingPeople  extends JFrame{
 					    //System.out.println(encodedfile);
 					    
 						String name = textField.getText();
-						System.out.println(name+" "+extension);
 						try {
 							HttpResponse<JsonNode> fileUpR = Unirest.post("https://oopmproj4751.localtunnel.me/gpr")
 									.header("Content-Type", "application/json")

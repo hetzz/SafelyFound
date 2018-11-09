@@ -41,7 +41,7 @@ public class SentEmail {
 			msg.setFrom(new InternetAddress(senderEmailID));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(receiverEmailID));
 			Transport.send(msg);
-			System.out.println("Message send Successfully:)");
+			
 		}
 
 		catch (Exception mex) {
@@ -50,10 +50,6 @@ public class SentEmail {
 
 	}
 
-	public class SMTPAuthenticator extends javax.mail.Authenticator {
-		public PasswordAuthentication getPasswordAuthentication() {
-			return new PasswordAuthentication(senderEmailID, senderPassword);
-		}
-	}
+	
 
 }

@@ -81,6 +81,12 @@ public class Home_page extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
+		JPanel panel_4 = new JPanel();
+		panel_4.setBackground(Color.WHITE);
+		panel_4.setBounds(306, 265, 745, 181);
+		contentPane.add(panel_4);
+		panel_4.setLayout(null);
+		
 		JPanel panel_1 = new JPanel();
 		panel_1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -276,47 +282,18 @@ public class Home_page extends JFrame {
 		separator.setBounds(15, 91, 267, 10);
 		panel.add(separator);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		textField.setBounds(374, 348, 481, 57);
-		contentPane.add(textField);
-		textField.setColumns(10);
-		
-		JButton button = new JButton("");
-		button.setBackground(new Color(255, 240, 245));
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String Name;
-				Name=textField.getText();
-				String driver="com.mysql.cj.jdbc.Driver";
-				try {
-					Class.forName(driver);
-					Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
-					PreparedStatement stmt=conn.prepareStatement("SELECT `Name`, `Location`, `Time` FROM `Finds` WHERE `Name` = '"+Name+"'");
-					ResultSet rs=stmt.executeQuery();
-					
-					System.out.println(rs);
-					table.setModel(DbUtils.resultSetToTableModel(rs));	
-					panel_9.revalidate();
-					panel_9.repaint();
-					while (rs.next()) {
-				        System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getString(4));
-				        
-				    }
-					
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				System.out.println("Hii");
+		JButton btnMaps = new JButton("Maps");
+		btnMaps.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
-		button.setIcon(new ImageIcon(Home_page.class.getResource("/Pack1/Images/icons8_Search_48px.png")));
-		button.setBounds(856, 348, 67, 57);
-		contentPane.add(button);
+		btnMaps.setForeground(new Color(255, 255, 255));
+		btnMaps.setBackground(new Color(0, 51, 153));
+		btnMaps.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		btnMaps.setBounds(630, 136, 115, 35);
+		panel_4.add(btnMaps);
+		btnMaps.setVisible(false);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(204, 102, 255));
@@ -352,16 +329,38 @@ public class Home_page extends JFrame {
 		label_1.setBounds(71, 16, 69, 20);
 		panel_3.add(label_1);
 		
-		JPanel panel_4 = new JPanel();
-		panel_4.setBackground(Color.WHITE);
-		panel_4.setBounds(306, 265, 745, 181);
-		contentPane.add(panel_4);
-		panel_4.setLayout(null);
+		
 		
 		JLabel lblCheckYourLoved = new JLabel("Check Status");
 		lblCheckYourLoved.setBounds(67, 26, 466, 57);
 		panel_4.add(lblCheckYourLoved);
 		lblCheckYourLoved.setFont(new Font("Tahoma", Font.BOLD, 19));
+		
+		textField = new JTextField();
+		textField.setBounds(67, 78, 481, 57);
+		panel_4.add(textField);
+		textField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				NameSearch();
+				btnMaps.setVisible(true);
+			}
+		});
+		textField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		textField.setColumns(10);
+		
+		JButton button = new JButton("");
+		button.setBounds(548, 78, 67, 57);
+		panel_4.add(button);
+		button.setBackground(new Color(255, 240, 245));
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				NameSearch();
+				btnMaps.setVisible(true);
+			}
+		});
+		button.setIcon(new ImageIcon(Home_page.class.getResource("/Pack1/Images/icons8_Search_48px.png")));
+		
+		
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setToolTipText("");
@@ -374,11 +373,42 @@ public class Home_page extends JFrame {
 		//panel_9.setPreferredSize(new Dimension(50, 40));
 		contentPane.add(panel_9);
 		
-		
-		
-		
 		table = new JTable();
+		table.setRowHeight(22);
+		table.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		scrollPane.setViewportView(table);
 		panel_9.add(scrollPane, BorderLayout.CENTER);
+		
+		
+	}
+
+	protected void NameSearch() {
+		// TODO Auto-generated method stub
+		String Name;
+		Name=textField.getText();
+		String driver="com.mysql.cj.jdbc.Driver";
+		try {
+			Class.forName(driver);
+			Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
+			PreparedStatement stmt=conn.prepareStatement("SELECT `Name`, `Location`, `Time` FROM `Finds` WHERE `Name` = '"+Name+"'");
+			ResultSet rs=stmt.executeQuery();
+			table.setModel(DbUtils.resultSetToTableModel(rs));	
+			panel_9.revalidate();
+			panel_9.repaint();
+			while (rs.next()) {
+		        System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getString(4));
+		        
+		    }
+			
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 }
