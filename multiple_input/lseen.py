@@ -49,7 +49,7 @@ def store(name):
             lastseendict[name] = [(datetime.datetime.now(), 'Matunga')]
         else:
             lastseendict[name].append((datetime.datetime.now(), 'Matunga'))
-        query += "INSERT INTO `Finds` (`Name`, `Location`, `Time`) VALUES ('"+name+"', 'Matunga', '"+str(lastseendict[name][-1][0])[:-7]+"');"
+        query += "INSERT INTO `finds` (`Name`, `Location`, `Time`) VALUES ('"+name+"', 'Matunga', '"+str(lastseendict[name][-1][0])[:-7]+"');"
 
 
         print('stored', lastseendict)

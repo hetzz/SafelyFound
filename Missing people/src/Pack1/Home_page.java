@@ -18,6 +18,7 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 
 import javax.swing.JTextField;
@@ -28,6 +29,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -47,6 +52,9 @@ public class Home_page extends JFrame {
 	private JTextField textField;
 	private JTable table;
 	private JPanel panel_9;
+	public static String dbun = "akshay_07cf";
+	public static String dbps = "@kshayps9";
+	public static String dbn = "db4free.net";
 	/**
 	 * Launch the application.
 	 */
@@ -285,6 +293,92 @@ public class Home_page extends JFrame {
 		JButton btnMaps = new JButton("Maps");
 		btnMaps.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String Name;
+				Name=textField.getText();
+				String driver="com.mysql.cj.jdbc.Driver";
+				try {
+					Class.forName(driver);
+					Connection conn=DriverManager.getConnection("jdbc:mysql://"+Home_page.dbn+":3306/oopmproj",Home_page.dbun,Home_page.dbps);
+					PreparedStatement stmt=conn.prepareStatement("SELECT `Location` FROM `finds` WHERE `Name` = '"+Name+"'");
+					ResultSet rs=stmt.executeQuery();
+					rs.next();
+					String location=rs.getString(1);
+					System.out.println(location);
+					String lat="19.1720";
+					String lng="72.9564";
+					String html = "<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"  <head>\r\n" + 
+							"    <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\r\n" + 
+							"    <meta charset=\"utf-8\">\r\n" + 
+							"    <title>Simple Markers</title>\r\n" + 
+							"    <style>\r\n" + 
+							"      /* Always set the map height explicitly to define the size of the div\r\n" + 
+							"       * element that contains the map. */\r\n" + 
+							"      #map {\r\n" + 
+							"        height: 100%;\r\n" + 
+							"      }\r\n" + 
+							"      /* Optional: Makes the sample page fill the window. */\r\n" + 
+							"      html, body {\r\n" + 
+							"        height: 100%;\r\n" + 
+							"        margin: 0;\r\n" + 
+							"        padding: 0;\r\n" + 
+							"      }\r\n" + 
+							"    </style>\r\n" + 
+							"  </head>\r\n" + 
+							"  <body>\r\n" + 
+							"    <div id=\"map\"></div>\r\n" + 
+							"    <script>\r\n" + 
+							"\r\n" + 
+							"      function initMap() {\r\n" + 
+							"        var myLatLng = {lat: "+lat+", lng: "+lng+"};\r\n" + 
+							"\r\n" + 
+							"        var map = new google.maps.Map(document.getElementById('map'), {\r\n" + 
+							"          zoom: 4,\r\n" + 
+							"          center: myLatLng\r\n" + 
+							"        });\r\n" + 
+							"\r\n" + 
+							"        var marker = new google.maps.Marker({\r\n" + 
+							"          position: myLatLng,\r\n" + 
+							"          map: map,\r\n" + 
+							"          title: 'Hello World!'\r\n" + 
+							"        });\r\n" + 
+							"      }\r\n" + 
+							"    </script>\r\n" + 
+							"    <script async defer\r\n" + 
+							"    src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyBvIhFGF046hbk3wuSZHEmXLdDN9lMcs6k&callback=initMap\">\r\n" + 
+							"    </script>\r\n" + 
+							"  </body>\r\n" + 
+							"</html>"+"";
+					File file=new File("Maps\\"+Name+".html");
+					FileOutputStream f=new FileOutputStream(file);
+					byte b[]=html.getBytes();   
+		             f.write(b); 
+		             f.close();
+		             Runtime rTime = Runtime.getRuntime();
+		             String url = "C:\\Users\\Hetal\\Desktop\\OOPM_Java\\OOPM-Project\\Missing people\\Maps"+Name+".html";
+		             String browser = "C:\\Users\\Hetal\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe ";
+		             Process pc = rTime.exec(browser + url);
+		             pc.waitFor();
+		            
+		        
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				
 			}
 		});
@@ -389,8 +483,8 @@ public class Home_page extends JFrame {
 		String driver="com.mysql.cj.jdbc.Driver";
 		try {
 			Class.forName(driver);
-			Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
-			PreparedStatement stmt=conn.prepareStatement("SELECT `Name`, `Location`, `Time` FROM `Finds` WHERE `Name` = '"+Name+"'");
+			Connection conn=DriverManager.getConnection("jdbc:mysql://"+Home_page.dbn+":3306/oopmproj",Home_page.dbun,Home_page.dbps);
+			PreparedStatement stmt=conn.prepareStatement("SELECT `Name`, `Location`, `Time` FROM `finds` WHERE `Name` = '"+Name+"'");
 			ResultSet rs=stmt.executeQuery();
 			table.setModel(DbUtils.resultSetToTableModel(rs));	
 			panel_9.revalidate();

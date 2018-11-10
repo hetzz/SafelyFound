@@ -121,8 +121,8 @@ public class Records extends JFrame {
 				String driver="com.mysql.cj.jdbc.Driver";
 				try {
 					Class.forName(driver);
-					Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
-					PreparedStatement stmt=conn.prepareStatement("select * from Records_MissingPpl");
+					Connection conn=DriverManager.getConnection("jdbc:mysql://"+Home_page.dbn+":3306/oopmproj",Home_page.dbun,Home_page.dbps);
+					PreparedStatement stmt=conn.prepareStatement("select * from records_missingppl");
 					ResultSet rs=stmt.executeQuery();
 					table.setModel(DbUtils.resultSetToTableModel(rs));
 					

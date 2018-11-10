@@ -284,63 +284,7 @@ public class MissingPeople  extends JFrame{
 				
 				jFile.setDialogTitle("Choose an Image to upload" );
 				int result =jFile.showSaveDialog(null);
-				/*if(result== JFileChooser.APPROVE_OPTION)
-				{
-					String encodedfile = null;
-					//Get this file path using JFileChooser instead
-					String filePath = jFile.getSelectedFile().getAbsolutePath();
-					File file = new File(filePath);
-					
-					System.out.println(file.length());
-					
-					String extension = "";
-					int i = filePath.lastIndexOf('.');
-					if (i > 0) {
-					    extension = filePath.substring(i+1);
-					}
-					
-					if (file.length() > 500000)
-					{
-						double compressionRatio=(0.85/file.length())*500000;
-						compress(file, compressionRatio);
-						file = new File("compressed_image.jpg");
-						extension = "jpg";
-					}
-					System.out.println(filePath);
-					
-					
-					Base64.Encoder encoder = Base64.getEncoder();
-				    try {
-				        FileInputStream fileInputStreamReader = new FileInputStream(file);
-				        byte[] bytes = new byte[(int)file.length()];
-				        fileInputStreamReader.read(bytes);
-				        encodedfile = encoder.encodeToString(bytes).toString();
-				        
-				    } catch (FileNotFoundException e) {
-				        // TODO Auto-generated catch block
-				        e.printStackTrace();
-				    } catch (IOException e) {
-				        // TODO Auto-generated catch block
-				        e.printStackTrace();
-				    }
-				    //System.out.println(encodedfile);
-				    
-					String name = textField.getText();
-					System.out.println(name+" "+extension);
-					try {
-						HttpResponse<JsonNode> fileUpR = Unirest.post("https://oopmproj4751.localtunnel.me/gpr")
-								.header("Content-Type", "application/json")
-						        .header("accept", "application/json")
-						        .body("{\"key\":\"!!MyKey@123eOOPM\", \"file\":\""+encodedfile+"\", \"name\":\""+name+"\", \"extension\":\""+extension+"\"}")
-								.asJson();
-						if((fileUpR.getBody().getObject().getString("uploaded")).equals("true"));
-							label_2.setVisible(true);
-					} catch (UnirestException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 
-				}*/
 				
 			}
 		});
@@ -448,7 +392,7 @@ public class MissingPeople  extends JFrame{
 					    
 						String name = textField.getText();
 						try {
-							HttpResponse<JsonNode> fileUpR = Unirest.post("https://oopmproj4751.localtunnel.me/gpr")
+							HttpResponse<JsonNode> fileUpR = Unirest.post(Surveillance.urlc+"/gpr")
 									.header("Content-Type", "application/json")
 							        .header("accept", "application/json")
 							        .body("{\"key\":\"!!MyKey@123eOOPM\", \"file\":\""+encodedfile+"\", \"name\":\""+name+"\", \"extension\":\""+extension+"\"}")
@@ -481,15 +425,15 @@ public class MissingPeople  extends JFrame{
 					
 					String driver="com.mysql.cj.jdbc.Driver";
 					Class.forName(driver);
-					Connection conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
-					PreparedStatement strt=conn.prepareStatement("insert into Records_MissingPpl values(?,?,?,?,?)");
+					Connection conn=DriverManager.getConnection("jdbc:mysql://"+Home_page.dbn+":3306/oopmproj",Home_page.dbun,Home_page.dbps);
+					PreparedStatement strt=conn.prepareStatement("insert into records_missingppl values(?,?,?,?,?)");
 		            strt.setString(1, nameM);
 		            strt.setInt(2, age);
 		            strt.setString(3, gender);
 		            strt.setString(4,date);
 		            strt.setString(5,  filenameRet);
 		            strt.execute();
-		            PreparedStatement str=conn.prepareStatement("insert into Records_Complainer values(?,?,?,?)");
+		            PreparedStatement str=conn.prepareStatement("insert into records_complainer values(?,?,?,?)");
 		            str.setString(1, nameM);
 		            str.setString(2, nameC);
 		            str.setString(3, emailId);

@@ -49,7 +49,13 @@ public class SentEmail {
 		}
 
 	}
-
+	 public class SMTPAuthenticator extends javax.mail.Authenticator
+	  {
+	  public PasswordAuthentication getPasswordAuthentication()
+	  {
+	  return new PasswordAuthentication(senderEmailID, senderPassword);
+	  }
+	  }
 	
 
 }

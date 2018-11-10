@@ -10,15 +10,16 @@ def wsid():
     t1 = None
     ct = 0
     clientstat = 'new'
+    surl = 'http://192.168.15.151:5000'
     clientid = -1
     headers = {'Content-Type': 'application/json', 'accept': 'application/json'}
     while True:
         send_data = {'clientstat':clientstat, 'clientid':clientid}
         try:
-            r = requests.post(url = "https://oopmproj4751.localtunnel.me/wsid", data = json.dumps(send_data), headers=headers) 
+            r = requests.post(url = surl+"/wsid", data = json.dumps(send_data), headers=headers) 
             data = r.json()
         except:
-            r = requests.post(url = "https://oopmproj4751.localtunnel.me/wsid", data = json.dumps(send_data), headers = headers) 
+            r = requests.post(url = surl+"/wsid", data = json.dumps(send_data), headers = headers) 
             data = r.json()
         if clientid == -1:
             clientid = data['clientid']
