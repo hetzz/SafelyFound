@@ -168,17 +168,16 @@ public class DeleteRecord extends JFrame {
 				try {
 					String driver = "com.mysql.cj.jdbc.Driver";
 					Class.forName(driver);
-					Connection conn = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj",
-							"akshay_07cf", "@kshayps9");
+					Connection conn = DriverManager.getConnection("jdbc:mysql://"+Home_page.dbn+":3306/oopmproj",
+							Home_page.dbun, Home_page.dbps);
 					PreparedStatement strt = conn.prepareStatement(
-							"SELECT * FROM Records_MissingPpl WHERE Name = ?");
+							"SELECT * FROM records_missingppl WHERE Name = ?");
 					strt.setString(1,textField.getText());
 					ResultSet rs = strt.executeQuery();
 					rs.next();
-					System.out.println(rs.getString(3)+" "+rs.getString(5));
 					String filename =rs.getString(5);
 					PreparedStatement str = conn.prepareStatement(
-							"SELECT * FROM Records_Complainer WHERE NameM = ?");
+							"SELECT * FROM records_complainer WHERE NameM = ?");
 					str.setString(1,textField.getText());
 					ResultSet r = str.executeQuery();
 					r.next();
@@ -195,22 +194,18 @@ public class DeleteRecord extends JFrame {
 						nameM = textField.getText();
 						age = Integer.parseInt(textField_2.getText());
 						nameC = textField_1.getText();
-						// String driver="com.mysql.cj.jdbc.Driver";
-						// Class.forName(driver);
-						// Connection
-						// conn=DriverManager.getConnection("jdbc:mysql://db4free.net:3306/oopmproj","akshay_07cf","@kshayps9");
-						String query1 = "delete from Records_Complainer where NameC = ?";
+						String query1 = "delete from records_complainer where NameC = ?";
 						PreparedStatement Strt = conn.prepareStatement(query1);
 						Strt.setString(1, nameC);
 						Strt.execute();
-						String query = "delete from Records_MissingPpl where Name = ?";
+						String query = "delete from records_missingppl where Name = ?";
 						PreparedStatement Stmt = conn.prepareStatement(query);
 						Stmt.setString(1, nameM);
 						Stmt.execute();
 
 						conn.close();
 						try {
-							HttpResponse<JsonNode> deleteR = Unirest.post("https://oopmproj4751.localtunnel.me/delete")
+							HttpResponse<JsonNode> deleteR = Unirest.post(Surveillance.urlc+"/delete")
 							        .header("Content-Type", "application/json")
 							        .header("accept", "application/json")
 							        .body("{\"key\":\"!!MyKey@123eOOPM\", \"filename\":\""+filename+"\"}")
