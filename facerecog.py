@@ -128,7 +128,7 @@ def main(ct):
     lastseen.openconnection()
     mobcam = False
     if mobcam:
-        address = 'http://192.168.15.184:8080/video'
+        address = 'http://192.168.43.1:8080/video'
     else:
         address = 0
     video_capture = cv2.VideoCapture(address)
