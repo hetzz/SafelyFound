@@ -39,6 +39,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Vector;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseAdapter;
 import javax.swing.JTable;
@@ -57,7 +58,8 @@ public class Home_page extends JFrame {
 	public static String dbun = "root";
 	public static String dbps = "@kshayps9";
 	//public static String dbn = "db4free.net";
-	public static String dbn = "192.168.15.151";
+	//public static String dbn = "192.168.15.151";
+	public static String dbn = "localhost";
 	/**
 	 * Launch the application.
 	 */
@@ -306,9 +308,11 @@ public class Home_page extends JFrame {
 					ResultSet rs=stmt.executeQuery();
 					boolean larr[] =new boolean[5];
 					String stns[] = {"Matunga", "Mulund", "Mumbai Central", "Vidyavihar", "Thane"};
+					Vector<Integer> stnord = new Vector<>();
 					while(rs.next())
 					{
 						larr[java.util.Arrays.asList(stns).indexOf(rs.getString(1))] = true;
+						if(!stnord.contains(java.util.Arrays.asList(stns).indexOf(rs.getString(1)))) stnord.add(java.util.Arrays.asList(stns).indexOf(rs.getString(1)));
 					}
 					
 					String jslarr = "";
@@ -317,6 +321,8 @@ public class Home_page extends JFrame {
 							jslarr = jslarr.concat(larr[i]? "true":"false");
 							if(i < stns.length - 1) jslarr = jslarr.concat(",");
 						}
+					
+					String jsstnord = stnord.toString();					
 						
 					
 					//String location=rs.getString(1);
@@ -350,9 +356,15 @@ public class Home_page extends JFrame {
 							"      function initMap() {\n" + 
 							"        var myLatLng = [{lat: 19.027633, lng: 72.850260}, {lat: 19.171848, lng: 72.956290}, { lat:18.969742, lng: 72.819414}, {lat: 19.079135, lng: 72.897205}, { lat: 19.186217, lng: 72.975462}];\n" + 
 							"        var jslarr = ["+jslarr+"];\n" + 
+							"var path = [];\n" + 
+							"        var stnord = "+jsstnord+";\n" + 
+							"        for(var i = 0; i<stnord.length; i++) \n" + 
+							"        {\n" + 
+							"          path.push(myLatLng[stnord[i]]);\n" + 
+							"        } console.log(path);"+
 							"		 var stnn = ['Matunga', 'Mulund', 'Mumbai Central', 'Vidyavihar', 'Thane'];\n" + 
 							"        var map = new google.maps.Map(document.getElementById('map'), {\n" + 
-							"          zoom: 10,\n" + 
+							"          zoom: 12,\n" + 
 							"          center: myLatLng[3]\n" + 
 							"        });\n" + 
 							"        \n" + 
@@ -362,10 +374,19 @@ public class Home_page extends JFrame {
 							"            map: map,\n" + 
 							"            title: stnn[i]\n" + 
 							"            }); } \n" + 
+							"var missingPath = new google.maps.Polyline({\n" + 
+							"          path: path,\n" + 
+							"          geodesic: true,\n" + 
+							"          strokeColor: '#FF0000',\n" + 
+							"          strokeOpacity: 1.0,\n" + 
+							"          strokeWeight: 2\n" + 
+							"        });\n" + 
+							"\n" + 
+							"        missingPath.setMap(map);"+
 							"      }\n" + 
 							"    </script>\n" + 
 							"    <script async defer\n" + 
-							"    src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyBvIhFGF046hbk3wuSZHEmXLdDN9lMcs6k&callback=initMap\">\n" + 
+							"    src=\"https://maps.googleapis.com/maps/api/js?key=&callback=initMap\">\n" + 
 							"    </script>\n" + 
 							"  </body>\n" + 
 							"</html>";
