@@ -53,12 +53,12 @@ public class Home_page extends JFrame {
 	private JTextField textField;
 	private JTable table;
 	private JPanel panel_9;
-	//public static String dbun = "akshay_07cf";
-	public static String dbun = "root";
+	public static String dbun = "akshay_07cf";
+	//public static String dbun = "root";
 	public static String dbps = "@kshayps9";
 
-	//public static String dbn = "db4free.net";
-	public static String dbn = "192.168.15.151";
+	public static String dbn = "db4free.net";
+	//public static String dbn = "192.168.15.151";
 	/**
 	 * Launch the application.
 	 */
@@ -371,17 +371,12 @@ public class Home_page extends JFrame {
 							"  </body>\n" + 
 							"</html>";
 
-					File file=new File("Maps\\"+Name+".html");
+					File file=new File("C:\\Users\\Hetal\\Desktop\\OOPM_Java\\OOPM-Project\\Missing people\\Maps\\"+Name+".html");
 					FileOutputStream f=new FileOutputStream(file);
 					byte b[]=html.getBytes();   
 		             f.write(b); 
 		             f.close();
-		             Runtime rTime = Runtime.getRuntime();
-		             String url = "C:\\Users\\Hetal\\Desktop\\OOPM_Java\\OOPM-Project\\Missing people\\Maps"+Name+".html";
-		             String browser = "C:\\Users\\Hetal\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe ";
-		             Process pc = rTime.exec(browser + url);
-		             pc.waitFor();
-		            
+		             Desktop.getDesktop().browse(file.toURI());
 		        
 				} catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
