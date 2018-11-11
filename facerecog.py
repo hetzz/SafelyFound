@@ -126,6 +126,7 @@ def main(ct):
     known_face_names, known_face_encodings = scan_known_people(known_people_folder)
     started = True
     lastseen.openconnection()
+    print('db connected')
     mobcam = False
     if mobcam:
         address = 'http://192.168.43.1:8080/video'

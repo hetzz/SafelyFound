@@ -51,11 +51,14 @@ def store(name):
         return True
     return False
 
-def openconnection():
+def openconnection(localdb = True):
     global db
     global cursor
     global query
-    db = MySQLdb.connect("db4free.net","akshay_07cf","@kshayps9","oopmproj" )
+    if localdb:
+        db = MySQLdb.connect("localhost","root","@kshayps9","oopmproj" )
+    else:
+        db = MySQLdb.connect("db4free.net","akshay_07cf","@kshayps9","oopmproj" )
     cursor = db.cursor()
     # cursor.execute("SET time_zone = '+5:30'")
     db.commit()

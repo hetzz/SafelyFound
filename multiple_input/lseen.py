@@ -56,11 +56,14 @@ def store(name):
         return True
     return False
 
-def openconnection():
+def openconnection(onLAN = True):
     global db
     global cursor
     global query
-    db = pymysql.connect("db4free.net","akshay_07cf","@kshayps9","oopmproj" )
+    if onLAN:
+        db = pymysql.connect("192.168.15.151","root","@kshayps9","oopmproj" )
+    else:
+        db = pymysql.connect("db4free.net","akshay_07cf","@kshayps9","oopmproj" )
     cursor = db.cursor()
     # cursor.execute("SET time_zone = '+5:30'")
     db.commit()
