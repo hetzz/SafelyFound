@@ -22,7 +22,7 @@ public class Surveillance {
 	public static void startSurveillance() {
 		// TODO Auto-generated method stub
 		try {
-			Thread.sleep(700);
+			Thread.sleep(1000);
 			HttpResponse<JsonNode> startR = Unirest.post(urlc+"/start")
 			        .header("Content-Type", "application/json")
 			        .header("accept", "application/json")
