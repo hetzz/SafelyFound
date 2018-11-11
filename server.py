@@ -4,7 +4,7 @@ from . import facerecog
 import os
 import base64
 import struct
-
+import time
 app = Flask(__name__) 
 
 port = '5000' 
@@ -40,6 +40,7 @@ def index():
 
 @app.route('/stop', methods = ['POST'])
 def stop():
+    
     facerecog.stop = True
     global updated
     updated = [False]*len(updated)

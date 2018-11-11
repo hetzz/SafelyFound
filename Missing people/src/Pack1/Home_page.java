@@ -38,6 +38,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseAdapter;
 import javax.swing.JTable;
@@ -52,10 +53,12 @@ public class Home_page extends JFrame {
 	private JTextField textField;
 	private JTable table;
 	private JPanel panel_9;
-	public static String dbun = "akshay_07cf";
+	//public static String dbun = "akshay_07cf";
+	public static String dbun = "root";
 	public static String dbps = "@kshayps9";
-	public static String dbn = "db4free.net";
-	public static String place;
+
+	//public static String dbn = "db4free.net";
+	public static String dbn = "192.168.15.151";
 	/**
 	 * Launch the application.
 	 */
@@ -302,57 +305,72 @@ public class Home_page extends JFrame {
 					Connection conn=DriverManager.getConnection("jdbc:mysql://"+Home_page.dbn+":3306/oopmproj",Home_page.dbun,Home_page.dbps);
 					PreparedStatement stmt=conn.prepareStatement("SELECT `Location` FROM `finds` WHERE `Name` = '"+Name+"'");
 					ResultSet rs=stmt.executeQuery();
-					rs.next();
-					String location=rs.getString(1);
-					System.out.println(location);
-					String[] lat= {"19.1720","19.0272"};
-					String[] lng= {"72.9564","72.8510"};
-					String[] ltn={"Mulund","Matunga"};
+			boolean larr[] =new boolean[5];
+					String stns[] = {"Matunga", "Mulund", "Mumbai Central", "Vidyavihar", "Thane"};
+					while(rs.next())
+					{
+						larr[java.util.Arrays.asList(stns).indexOf(rs.getString(1))] = true;
+					}
 					
-					String html = "<!DOCTYPE html>\r\n" + 
-							"<html>\r\n" + 
-							"  <head>\r\n" + 
-							"    <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\r\n" + 
-							"    <meta charset=\"utf-8\">\r\n" + 
-							"    <title>Simple Markers</title>\r\n" + 
-							"    <style>\r\n" + 
-							"      /* Always set the map height explicitly to define the size of the div\r\n" + 
-							"       * element that contains the map. */\r\n" + 
-							"      #map {\r\n" + 
-							"        height: 100%;\r\n" + 
-							"      }\r\n" + 
-							"      /* Optional: Makes the sample page fill the window. */\r\n" + 
-							"      html, body {\r\n" + 
-							"        height: 100%;\r\n" + 
-							"        margin: 0;\r\n" + 
-							"        padding: 0;\r\n" + 
-							"      }\r\n" + 
-							"    </style>\r\n" + 
-							"  </head>\r\n" + 
-							"  <body>\r\n" + 
-							"    <div id=\"map\"></div>\r\n" + 
-							"    <script>\r\n" + 
-							"\r\n" + 
-							"      function initMap() {\r\n" + 
-							"        var myLatLng = {lat: "+lat+", lng: "+lng+"};\r\n" + 
-							"\r\n" + 
-							"        var map = new google.maps.Map(document.getElementById('map'), {\r\n" + 
-							"          zoom: 4,\r\n" + 
-							"          center: myLatLng\r\n" + 
-							"        });\r\n" + 
-							"\r\n" + 
-							"        var marker = new google.maps.Marker({\r\n" + 
-							"          position: myLatLng,\r\n" + 
-							"          map: map,\r\n" + 
-							"          title: 'Hello World!'\r\n" + 
-							"        });\r\n" + 
-							"      }\r\n" + 
-							"    </script>\r\n" + 
-							"    <script async defer\r\n" + 
-							"    src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyBvIhFGF046hbk3wuSZHEmXLdDN9lMcs6k&callback=initMap\">\r\n" + 
-							"    </script>\r\n" + 
-							"  </body>\r\n" + 
-							"</html>"+"";
+					String jslarr = "";
+					for(int i = 0; i<stns.length; i++) 
+						{
+							jslarr = jslarr.concat(larr[i]? "true":"false");
+							if(i < stns.length - 1) jslarr = jslarr.concat(",");
+						}
+						
+					
+					//String location=rs.getString(1);
+					//System.out.println(location);
+					/*String lat="19.1720";
+					String lng="72.9564";*/
+					String html = "<!DOCTYPE html>\n" + 
+							"<html>\n" + 
+							"  <head>\n" + 
+							"    <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n" + 
+							"    <meta charset=\"utf-8\">\n" + 
+							"    <title>"+Name+"</title>\n" + 
+							"    <style>\n" + 
+							"      /* Always set the map height explicitly to define the size of the div\n" + 
+							"       * element that contains the map. */\n" + 
+							"      #map {\n" + 
+							"        height: 100%;\n" + 
+							"      }\n" + 
+							"      /* Optional: Makes the sample page fill the window. */\n" + 
+							"      html, body {\n" + 
+							"        height: 100%;\n" + 
+							"        margin: 0;\n" + 
+							"        padding: 0;\n" + 
+							"      }\n" + 
+							"    </style>\n" + 
+							"  </head>\n" + 
+							"  <body>\n" + 
+							"    <div id=\"map\"></div>\n" + 
+							"    <script>\n" + 
+							"\n" + 
+							"      function initMap() {\n" + 
+							"        var myLatLng = [{lat: 19.027633, lng: 72.850260}, {lat: 19.171848, lng: 72.956290}, { lat:18.969742, lng: 72.819414}, {lat: 19.079135, lng: 72.897205}, { lat: 19.186217, lng: 72.975462}];\n" + 
+							"        var jslarr = ["+jslarr+"];\n" + 
+							"		 var stnn = ['Matunga', 'Mulund', 'Mumbai Central', 'Vidyavihar', 'Thane'];\n" + 
+							"        var map = new google.maps.Map(document.getElementById('map'), {\n" + 
+							"          zoom: 10,\n" + 
+							"          center: myLatLng[3]\n" + 
+							"        });\n" + 
+							"        \n" + 
+							"        for(var i = 0; i<myLatLng.length; i++) if(jslarr[i]){ \n" + 
+							"            var marker = new google.maps.Marker({\n" + 
+							"            position: myLatLng[i],\n" + 
+							"            map: map,\n" + 
+							"            title: stnn[i]\n" + 
+							"            }); } \n" + 
+							"      }\n" + 
+							"    </script>\n" + 
+							"    <script async defer\n" + 
+							"    src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyBvIhFGF046hbk3wuSZHEmXLdDN9lMcs6k&callback=initMap\">\n" + 
+							"    </script>\n" + 
+							"  </body>\n" + 
+							"</html>";
+
 					File file=new File("Maps\\"+Name+".html");
 					FileOutputStream f=new FileOutputStream(file);
 					byte b[]=html.getBytes();   
@@ -377,7 +395,7 @@ public class Home_page extends JFrame {
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				} catch (InterruptedException e1) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
