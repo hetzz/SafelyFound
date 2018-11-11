@@ -55,6 +55,7 @@ public class Home_page extends JFrame {
 	public static String dbun = "akshay_07cf";
 	public static String dbps = "@kshayps9";
 	public static String dbn = "db4free.net";
+	public static String place;
 	/**
 	 * Launch the application.
 	 */
@@ -304,8 +305,10 @@ public class Home_page extends JFrame {
 					rs.next();
 					String location=rs.getString(1);
 					System.out.println(location);
-					String lat="19.1720";
-					String lng="72.9564";
+					String[] lat= {"19.1720","19.0272"};
+					String[] lng= {"72.9564","72.8510"};
+					String[] ltn={"Mulund","Matunga"};
+					
 					String html = "<!DOCTYPE html>\r\n" + 
 							"<html>\r\n" + 
 							"  <head>\r\n" + 
@@ -491,8 +494,7 @@ public class Home_page extends JFrame {
 			panel_9.repaint();
 			while (rs.next()) {
 		        System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getString(4));
-		        
-		    }
+		       }
 			
 			
 		} catch (ClassNotFoundException e) {
