@@ -53,11 +53,12 @@ public class Home_page extends JFrame {
 	private JTextField textField;
 	private JTable table;
 	private JPanel panel_9;
-	//public static String dbun = "akshay_07cf";
-	public static String dbun = "root";
+	public static String dbun = "akshay_07cf";
+	//public static String dbun = "root";
 	public static String dbps = "@kshayps9";
-	//public static String dbn = "db4free.net";
-	public static String dbn = "192.168.15.151";
+
+	public static String dbn = "db4free.net";
+	//public static String dbn = "192.168.15.151";
 	/**
 	 * Launch the application.
 	 */
@@ -304,7 +305,7 @@ public class Home_page extends JFrame {
 					Connection conn=DriverManager.getConnection("jdbc:mysql://"+Home_page.dbn+":3306/oopmproj",Home_page.dbun,Home_page.dbps);
 					PreparedStatement stmt=conn.prepareStatement("SELECT `Location` FROM `finds` WHERE `Name` = '"+Name+"'");
 					ResultSet rs=stmt.executeQuery();
-					boolean larr[] =new boolean[5];
+			boolean larr[] =new boolean[5];
 					String stns[] = {"Matunga", "Mulund", "Mumbai Central", "Vidyavihar", "Thane"};
 					while(rs.next())
 					{
@@ -369,17 +370,13 @@ public class Home_page extends JFrame {
 							"    </script>\n" + 
 							"  </body>\n" + 
 							"</html>";
-					File file=new File("Maps\\"+Name+".html");
+
+					File file=new File("C:\\Users\\Hetal\\Desktop\\OOPM_Java\\OOPM-Project\\Missing people\\Maps\\"+Name+".html");
 					FileOutputStream f=new FileOutputStream(file);
 					byte b[]=html.getBytes();   
 		             f.write(b); 
 		             f.close();
-		             Runtime rTime = Runtime.getRuntime();
-		             String url = "C:\\Users\\Hetal\\Desktop\\OOPM_Java\\OOPM-Project\\Missing people\\Maps"+Name+".html";
-		             String browser = "C:\\Users\\Hetal\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe ";
-		             Process pc = rTime.exec(browser + url);
-		             pc.waitFor();
-		            
+		             Desktop.getDesktop().browse(file.toURI());
 		        
 				} catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
@@ -510,8 +507,7 @@ public class Home_page extends JFrame {
 			panel_9.repaint();
 			while (rs.next()) {
 		        System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getString(4));
-		        
-		    }
+		       }
 			
 			
 		} catch (ClassNotFoundException e) {

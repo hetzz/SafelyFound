@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <title>Simple Markers</title>
+    <title>Hetal</title>
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -23,18 +23,20 @@
     <script>
 
       function initMap() {
-        var myLatLng = {lat: 19.1720, lng: 72.9564};
-
+        var myLatLng = [{lat: 19.027633, lng: 72.850260}, {lat: 19.171848, lng: 72.956290}, { lat:18.969742, lng: 72.819414}, {lat: 19.079135, lng: 72.897205}, { lat: 19.186217, lng: 72.975462}];
+        var jslarr = [true,true,false,false,true];
+		 var stnn = ['Matunga', 'Mulund', 'Mumbai Central', 'Vidyavihar', 'Thane'];
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
-          center: myLatLng
+          zoom: 10,
+          center: myLatLng[3]
         });
-
-        var marker = new google.maps.Marker({
-          position: myLatLng,
-          map: map,
-          title: 'Hello World!'
-        });
+        
+        for(var i = 0; i<myLatLng.length; i++) if(jslarr[i]){ 
+            var marker = new google.maps.Marker({
+            position: myLatLng[i],
+            map: map,
+            title: stnn[i]
+            }); } 
       }
     </script>
     <script async defer
