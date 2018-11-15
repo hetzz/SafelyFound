@@ -54,12 +54,12 @@ public class Home_page extends JFrame {
 	private JTextField textField;
 	private JTable table;
 	private JPanel panel_9;
-	//public static String dbun = "akshay_07cf";
-	public static String dbun = "root";
+	public static String dbun = "akshay_07cf";
+	//public static String dbun = "root";
 	public static String dbps = "@kshayps9";
-	//public static String dbn = "db4free.net";
+	public static String dbn = "db4free.net";
 	//public static String dbn = "192.168.15.151";
-	public static String dbn = "localhost";
+	//public static String dbn = "localhost";
 	/**
 	 * Launch the application.
 	 */
@@ -386,7 +386,7 @@ public class Home_page extends JFrame {
 							"      }\n" + 
 							"    </script>\n" + 
 							"    <script async defer\n" + 
-							"    src=\"https://maps.googleapis.com/maps/api/js?key=&callback=initMap\">\n" + 
+							"    src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyAUnMz4MLO_rkmIw_pMWmdofukgSsHeMJ0&callback=initMap\">\n" + 
 							"    </script>\n" + 
 							"  </body>\n" + 
 							"</html>";

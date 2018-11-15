@@ -93,7 +93,7 @@ def dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam = 
 def main(ct, known_face_encodings, known_face_names):
     reload(lseen)
     lseen.openconnection()
-    mobcam = True
+    mobcam = False
     if mobcam:
         # address = 'http://192.168.15.184:8080/video'
         address = 'http://192.168.15.118:8080/video'

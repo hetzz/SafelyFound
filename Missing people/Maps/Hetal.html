@@ -25,9 +25,14 @@
       function initMap() {
         var myLatLng = [{lat: 19.027633, lng: 72.850260}, {lat: 19.171848, lng: 72.956290}, { lat:18.969742, lng: 72.819414}, {lat: 19.079135, lng: 72.897205}, { lat: 19.186217, lng: 72.975462}];
         var jslarr = [true,true,false,false,true];
-		 var stnn = ['Matunga', 'Mulund', 'Mumbai Central', 'Vidyavihar', 'Thane'];
+var path = [];
+        var stnord = [1, 4, 0];
+        for(var i = 0; i<stnord.length; i++) 
+        {
+          path.push(myLatLng[stnord[i]]);
+        } console.log(path);		 var stnn = ['Matunga', 'Mulund', 'Mumbai Central', 'Vidyavihar', 'Thane'];
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 10,
+          zoom: 12,
           center: myLatLng[3]
         });
         
@@ -37,10 +42,18 @@
             map: map,
             title: stnn[i]
             }); } 
-      }
+var missingPath = new google.maps.Polyline({
+          path: path,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+
+        missingPath.setMap(map);      }
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvIhFGF046hbk3wuSZHEmXLdDN9lMcs6k&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUnMz4MLO_rkmIw_pMWmdofukgSsHeMJ0&callback=initMap">
     </script>
   </body>
 </html>

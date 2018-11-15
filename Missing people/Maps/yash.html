@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <title>Akshay</title>
+    <title>yash</title>
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -24,9 +24,9 @@
 
       function initMap() {
         var myLatLng = [{lat: 19.027633, lng: 72.850260}, {lat: 19.171848, lng: 72.956290}, { lat:18.969742, lng: 72.819414}, {lat: 19.079135, lng: 72.897205}, { lat: 19.186217, lng: 72.975462}];
-        var jslarr = [true,true,false,false,true];
+        var jslarr = [false,true,true,false,false];
 var path = [];
-        var stnord = [1, 4, 0];
+        var stnord = [1, 2];
         for(var i = 0; i<stnord.length; i++) 
         {
           path.push(myLatLng[stnord[i]]);
@@ -53,7 +53,7 @@ var missingPath = new google.maps.Polyline({
         missingPath.setMap(map);      }
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUnMz4MLO_rkmIw_pMWmdofukgSsHeMJ0&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?AIzaSyAUnMz4MLO_rkmIw_pMWmdofukgSsHeMJ0=&callback=initMap">
     </script>
   </body>
 </html>
