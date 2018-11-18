@@ -366,7 +366,7 @@ public class Home_page extends JFrame {
 							"      }\n" + 
 							"    </script>\n" + 
 							"    <script async defer\n" + 
-							"    src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyBvIhFGF046hbk3wuSZHEmXLdDN9lMcs6k&callback=initMap\">\n" + 
+							"    src=\"https://maps.googleapis.com/maps/api/js?key&callback=initMap\">\n" + 
 							"    </script>\n" + 
 							"  </body>\n" + 
 							"</html>";
