@@ -329,7 +329,8 @@ public class Home_page extends JFrame {
 					//System.out.println(location);
 					/*String lat="19.1720";
 					String lng="72.9564";*/
-					String html = "<!DOCTYPE html>\n" + 
+					String html =
+							"    src=\"https://maps.googleapis.com/maps/api/js?key&callback=initMap\">\n" + "<!DOCTYPE html>\n" + 
 							"<html>\n" + 
 							"  <head>\n" + 
 							"    <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n" + 
@@ -386,7 +387,7 @@ public class Home_page extends JFrame {
 							"      }\n" + 
 							"    </script>\n" + 
 							"    <script async defer\n" + 
-							"    src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyAUnMz4MLO_rkmIw_pMWmdofukgSsHeMJ0&callback=initMap\">\n" + 
+							"    src=\"https://maps.googleapis.com/maps/api/js?key=&callback=initMap\">\n" + 
 							"    </script>\n" + 
 							"  </body>\n" + 
 							"</html>";
