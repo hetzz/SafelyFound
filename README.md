@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=300px src=".assets/logo.png" alt="SafelyFound-Logo"></a>
+ <img width=300px src="./assets/logo.png" alt="SafelyFound-Logo"></a>
 </p>
 
 <h3 align="center">Providing help to locate missing children via face recognition</h3>
