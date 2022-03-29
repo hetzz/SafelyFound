@@ -6,8 +6,8 @@ import java.util.*;
 
 public class SentEmail {
 
-	final String senderEmailID = "safelyfound@gmail.com";
-	final String senderPassword = "safefindqwerty";
+	final String senderEmailID = "email@gmail.com";
+	final String senderPassword = "safefind";
 	final String emailSMTPserver = "smtp.gmail.com";
 	final String emailServerPort = "465";
 	String receiverEmailID = null;
